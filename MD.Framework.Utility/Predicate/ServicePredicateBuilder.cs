@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using System.Text;
@@ -25,10 +26,8 @@ namespace MD.Framework.Utility
 		[DataMember]
 		public List<string> IncludedNavigationProperties { get; set; }
 
-		private List<Expression<Func<TEntity, object>>> _includedNavigationPropertiesExpression;
 		public List<Expression<Func<TEntity, object>>> IncludedNavigationPropertiesExpression
 		{
-			get { return _includedNavigationPropertiesExpression; }
 			set
 			{
 				if (value == null)
@@ -45,7 +44,48 @@ namespace MD.Framework.Utility
 						IncludedNavigationProperties.Add(selectorString.Remove(0, selectorString.IndexOf('.') + 1));
 					}
 				}
-				_includedNavigationPropertiesExpression = value;
+			}
+		}
+
+		public void AddIncludedNavigationProperty(Expression<Func<TEntity, object>> expression)
+		{
+			if (expression == null)
+			{
+				return;
+			}
+			if (IncludedNavigationProperties == null)
+				IncludedNavigationProperties = new List<string>();
+
+			string selectorString = expression.Body.ToString();
+			IncludedNavigationProperties.Add(selectorString.Remove(0, selectorString.IndexOf('.') + 1));
+		}
+
+		public void AddRangeIncludedNavigationProperty(List<Expression<Func<TEntity, object>>> expressions)
+		{
+			if (expressions == null || !expressions.Any())
+			{
+				return;
+			}
+
+			if (IncludedNavigationProperties == null)
+				IncludedNavigationProperties = new List<string>();
+			foreach (Expression<Func<TEntity, object>> expression in expressions)
+			{
+				string selectorString = expression.Body.ToString();
+				IncludedNavigationProperties.Add(selectorString.Remove(0, selectorString.IndexOf('.') + 1));
+			}
+		}
+
+		public void RemoveIncludedNavigationProperty(Expression<Func<TEntity, object>> expression)
+		{
+			if (expression == null)
+			{
+				return;
+			}
+			if (IncludedNavigationProperties != null && IncludedNavigationProperties.Any())
+			{
+				string selectorString = expression.Body.ToString();
+				IncludedNavigationProperties.Remove(selectorString.Remove(0, selectorString.IndexOf('.') + 1));
 			}
 		}
 
