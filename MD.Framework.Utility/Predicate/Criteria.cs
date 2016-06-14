@@ -252,7 +252,11 @@ namespace MD.Framework.Utility
 				if (_checkedIds.Contains(childrenConditionTree.Id)) continue;
 				_checkedIds.Add(childrenConditionTree.Id);
 
-				switch (childrenConditionTree.NextLogicalOperator)
+				var logicalOperator = childrenConditionTree.ChildrenConditions.Any()
+					? this.ConditionContainer.Tree.NextLogicalOperator
+					: childrenConditionTree.NextLogicalOperator;
+
+				switch (logicalOperator)
 				{
 					case LogicalOperatorEnum.And:
 						resultExpression = Expression.AndAlso(resultExpression, ConvertConditionToExpresion(childrenConditionTree, parameterExpressionType, parameterExpression));
