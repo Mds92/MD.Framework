@@ -8,7 +8,7 @@ namespace MD.Framework.Utility
 	public class Condition
 	{
 		[DataMember]
-		public long Id { get; internal set; }
+		public Guid Id { get; internal set; }
 
 		[DataMember]
 		public string EntityTypeName { get; set; }

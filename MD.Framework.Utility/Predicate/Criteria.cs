@@ -19,9 +19,11 @@ namespace MD.Framework.Utility
 		[DataMember]
 		private Condition ConditionContainer { get; set; }
 		private Type _entityType;
-		private readonly static ObjectIDGenerator IdGenerator = new ObjectIDGenerator();
-		private static bool _firstTime;
 		private static readonly Type StringType = typeof(string);
+		private static Guid GetNewGuid()
+		{
+			return Guid.NewGuid();
+		}
 
 		private Criteria() { }
 
@@ -44,8 +46,8 @@ namespace MD.Framework.Utility
 				},
 				_entityType = entityType
 			};
-			critaria.ConditionContainer.Id = IdGenerator.GetId(critaria.ConditionContainer, out _firstTime);
-			critaria.ConditionContainer.Tree.Id = IdGenerator.GetId(critaria.ConditionContainer.Tree, out _firstTime);
+			critaria.ConditionContainer.Id = GetNewGuid();
+			critaria.ConditionContainer.Tree.Id = GetNewGuid();
 			return critaria;
 		}
 
@@ -67,8 +69,8 @@ namespace MD.Framework.Utility
 				},
 				_entityType = entityType
 			};
-			critaria.ConditionContainer.Id = IdGenerator.GetId(critaria.ConditionContainer, out _firstTime);
-			critaria.ConditionContainer.Tree.Id = IdGenerator.GetId(critaria.ConditionContainer.Tree, out _firstTime);
+			critaria.ConditionContainer.Id = GetNewGuid();
+			critaria.ConditionContainer.Tree.Id = GetNewGuid();
 			return critaria;
 		}
 
@@ -101,8 +103,8 @@ namespace MD.Framework.Utility
 				Value = value,
 				NextLogicalOperator = LogicalOperatorEnum.Or,
 				SelectorString = selectorString,
+				Id = GetNewGuid()
 			};
-			newConditionTree.Id = IdGenerator.GetId(newConditionTree, out _firstTime);
 			this.ConditionContainer.Tree.ChildrenConditions.Add(newConditionTree);
 			return this;
 		}
@@ -117,9 +119,9 @@ namespace MD.Framework.Utility
 				OperationType = operationType,
 				Value = value,
 				NextLogicalOperator = LogicalOperatorEnum.Or,
-				SelectorString = GetSelectorStringFromExpression(selectorExpression)
+				SelectorString = GetSelectorStringFromExpression(selectorExpression),
+				Id = GetNewGuid()
 			};
-			newConditionTree.Id = IdGenerator.GetId(newConditionTree, out _firstTime);
 			this.ConditionContainer.Tree.ChildrenConditions.Add(newConditionTree);
 			return this;
 		}
@@ -148,9 +150,9 @@ namespace MD.Framework.Utility
 				OperationType = operationType,
 				Value = value,
 				NextLogicalOperator = LogicalOperatorEnum.And,
-				SelectorString = GetSelectorStringFromExpression(selectorExpression)
+				SelectorString = GetSelectorStringFromExpression(selectorExpression),
+				Id = GetNewGuid()
 			};
-			newConditionTree.Id = IdGenerator.GetId(newConditionTree, out _firstTime);
 			this.ConditionContainer.Tree.ChildrenConditions.Add(newConditionTree);
 			return this;
 		}
@@ -170,8 +172,8 @@ namespace MD.Framework.Utility
 				Value = value,
 				NextLogicalOperator = LogicalOperatorEnum.And,
 				SelectorString = selectorString,
+				Id = GetNewGuid()
 			};
-			newConditionTree.Id = IdGenerator.GetId(newConditionTree, out _firstTime);
 			this.ConditionContainer.Tree.ChildrenConditions.Add(newConditionTree);
 			return this;
 		}
@@ -182,7 +184,7 @@ namespace MD.Framework.Utility
 
 		public Expression<Func<TDestination, bool>> TypedGetExpression<TDestination>() where TDestination : class
 		{
-			_checkedIds = new List<double>();
+			_checkedIds = new List<Guid>();
 			Type entityType = typeof(TDestination);
 			ParameterExpression parameterExpression = Expression.Parameter(entityType, "entity");
 			Expression resultExpression = ConvertConditionToExpresion(this.ConditionContainer.Tree, entityType, parameterExpression);
@@ -234,14 +236,14 @@ namespace MD.Framework.Utility
 
 		public Expression<Func<TEntity, bool>> GetExpression()
 		{
-			_checkedIds = new List<double>();
+			_checkedIds = new List<Guid>();
 			Type entityType = typeof(TEntity);
 			ParameterExpression parameterExpression = Expression.Parameter(entityType, "entity");
 			Expression resultExpression = ConvertConditionToExpresion(this.ConditionContainer.Tree, entityType, parameterExpression);
 			return Expression.Lambda<Func<TEntity, bool>>(resultExpression, parameterExpression);
 		}
 
-		private List<double> _checkedIds;
+		private List<Guid> _checkedIds;
 
 		private Expression ConvertConditionToExpresion(ConditionTree conditionTree, Type parameterExpressionType, ParameterExpression parameterExpression)
 		{
