@@ -76,8 +76,8 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Delete)]
 		public void Delete(Expression<Func<TEntity, bool>> predicate)
 		{
-			List<TEntity> entities = DbSet.Where(predicate).ToList();
-			foreach (TEntity entity in entities)
+			var entities = DbSet.Where(predicate).ToList();
+			foreach (var entity in entities)
 			{
 				BeforeRemoveOrDelete(entity);
 				DbSet.Remove(entity);
@@ -101,9 +101,9 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Delete)]
 		public void Delete(IEnumerable<TIdentifier> identifiers)
 		{
-			List<TIdentifier> idsList = identifiers.ToList();
-			List<TEntity> entities = SelectAll(idsList).ToList();
-			foreach (TEntity entity in entities)
+			var idsList = identifiers.ToList();
+			var entities = SelectAll(idsList).ToList();
+			foreach (var entity in entities)
 			{
 				BeforeRemoveOrDelete(entity);
 				this.Context.Entry(entity).State = EntityState.Deleted;
@@ -121,8 +121,8 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Delete)]
 		public void Delete(IEnumerable<TEntity> entities)
 		{
-			List<TEntity> entitiesList = entities.ToList();
-			foreach (TEntity entity in entitiesList)
+			var entitiesList = entities.ToList();
+			foreach (var entity in entitiesList)
 			{
 				BeforeRemoveOrDelete(entity);
 				DbSet.Remove(entity);
@@ -138,9 +138,9 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Delete)]
 		public void Remove(Expression<Func<TEntity, bool>> predicate)
 		{
-			IQueryable<TEntity> entities = DbSet.Where(predicate);
+			var entities = DbSet.Where(predicate);
 			if (!entities.Any()) return;
-			foreach (TEntity entity in entities)
+			foreach (var entity in entities)
 			{
 				BeforeRemoveOrDelete(entity);
 				DbSet.Remove(entity);
@@ -157,7 +157,7 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Delete)]
 		public void Remove(TIdentifier identifier)
 		{
-			TEntity entity = SelectBy(identifier);
+			var entity = SelectBy(identifier);
 			if (entity == null) return;
 			BeforeRemoveOrDelete(entity);
 			DbSet.Remove(entity);
@@ -167,8 +167,8 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Delete)]
 		public void Remove(IEnumerable<TIdentifier> identifiers)
 		{
-			List<TEntity> entities = SelectAll(identifiers.ToList()).ToList();
-			foreach (TEntity entity in entities)
+			var entities = SelectAll(identifiers.ToList()).ToList();
+			foreach (var entity in entities)
 			{
 				BeforeRemoveOrDelete(entity);
 				DbSet.Remove(entity);
@@ -187,8 +187,8 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Delete)]
 		public void Remove(IEnumerable<TEntity> entities)
 		{
-			List<TEntity> entityList = entities.ToList();
-			foreach (TEntity entity in entityList)
+			var entityList = entities.ToList();
+			foreach (var entity in entityList)
 			{
 				BeforeRemoveOrDelete(entity);
 				DbSet.Remove(entity);
@@ -212,7 +212,7 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Insert, true)]
 		public void Add(IEnumerable<TEntity> entities)
 		{
-			foreach (TEntity entity in entities)
+			foreach (var entity in entities)
 			{
 				BeforeAddOrInsert(entity);
 				BeforeUpdateOrSaveChangesOrAddOrInsert(entity);
@@ -230,7 +230,7 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Insert, true)]
 		public List<TEntity> Insert(List<TEntity> entities)
 		{
-			foreach (TEntity entity in entities)
+			foreach (var entity in entities)
 			{
 				BeforeAddOrInsert(entity);
 				DbSet.Add(entity);
@@ -247,24 +247,24 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Select)]
 		public long SelectNextId()
 		{
-			string tableName = this.GetCurrentEntityTableName();
+			var tableName = this.GetCurrentEntityTableName();
 			const string command = @"SELECT IDENT_CURRENT ({0}) AS Current_Identity;";
-			decimal id = (Context as IObjectContextAdapter).ObjectContext.ExecuteStoreQuery<decimal>(command, tableName).FirstOrDefault();
+			var id = (Context as IObjectContextAdapter).ObjectContext.ExecuteStoreQuery<decimal>(command, tableName).FirstOrDefault();
 			return Convert.ToInt64(id) + 1;
 		}
 
 		public bool IsUnique<TProperty>(Expression<Func<TEntity, TProperty>> propertyLambda, TProperty value, TIdentifier identifier)
 		{
-			Type typeOfProperty = typeof(TProperty);
+			var typeOfProperty = typeof(TProperty);
 
 			if (Equals(value, default(TProperty)))
 				return true;
 
-			MemberExpression member = propertyLambda.Body as MemberExpression;
+			var member = propertyLambda.Body as MemberExpression;
 			if (member == null)
 				throw new ArgumentException(string.Format("Expression '{0}' refers to a method, not a property.", propertyLambda));
 
-			PropertyInfo propInfo = member.Member as PropertyInfo;
+			var propInfo = member.Member as PropertyInfo;
 			if (propInfo == null)
 				throw new ArgumentException(string.Format("Expression '{0}' refers to a field, not a property.", propertyLambda));
 
@@ -274,27 +274,27 @@ namespace MD.Framework.Business
 			if (EntityType != propInfo.ReflectedType && !EntityType.IsSubclassOf(propInfo.ReflectedType))
 				throw new ArgumentException(string.Format("Expresion '{0}' refers to a property that is not from type {1}.", propertyLambda, EntityType));
 
-			ParameterExpression parameterExpression = Expression.Parameter(EntityType, "q");
+			var parameterExpression = Expression.Parameter(EntityType, "q");
 
 			// ------------------------------------------------------------------
-			MemberExpression memberExpression1 = Expression.Property(parameterExpression, propInfo);
-			ConstantExpression constantExpression1 = Expression.Constant(value, typeOfProperty);
-			BinaryExpression binaryExpression1 = Expression.Equal(memberExpression1, constantExpression1);
+			var memberExpression1 = Expression.Property(parameterExpression, propInfo);
+			var constantExpression1 = Expression.Constant(value, typeOfProperty);
+			var binaryExpression1 = Expression.Equal(memberExpression1, constantExpression1);
 
 			// ------------------------------------------------------------------
-			MemberExpression memberExpression2 = Expression.MakeMemberAccess(parameterExpression, IdentifierPropertyInfo);
-			ConstantExpression constantExpression2 = Expression.Constant(identifier, IdentifierType);
-			BinaryExpression binaryExpression2 = Expression.NotEqual(memberExpression2, constantExpression2);
+			var memberExpression2 = Expression.MakeMemberAccess(parameterExpression, IdentifierPropertyInfo);
+			var constantExpression2 = Expression.Constant(identifier, IdentifierType);
+			var binaryExpression2 = Expression.NotEqual(memberExpression2, constantExpression2);
 
-			Expression<Func<TEntity, bool>> lambdaExpression = Expression.Lambda<Func<TEntity, bool>>(Expression.AndAlso(binaryExpression1, binaryExpression2), parameterExpression);
+			var lambdaExpression = Expression.Lambda<Func<TEntity, bool>>(Expression.AndAlso(binaryExpression1, binaryExpression2), parameterExpression);
 
 			return SelectCount(lambdaExpression) == 0;
 		}
 
 		public string GetDatabaseName()
 		{
-			string connectionString = Context.Database.Connection.ConnectionString;
-			MatchCollection matchs = Regex.Matches(connectionString, @"(?<=initial\s+catalog\s*=)[^;]+(?=;)", RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace);
+			var connectionString = Context.Database.Connection.ConnectionString;
+			var matchs = Regex.Matches(connectionString, @"(?<=initial\s+catalog\s*=)[^;]+(?=;)", RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace);
 			if (matchs.Count <= 0) throw new Exception("'initial catalog' didn't find in your connection string");
 			return matchs[0].Value;
 		}
@@ -311,8 +311,8 @@ namespace MD.Framework.Business
 
 		public void RunTsqWithVoidReturnValue(string tsql)
 		{
-			using (SqlConnection sqlConnection = new SqlConnection(GetConnectionString()))
-			using (SqlCommand cmd = new SqlCommand("RunTsql", sqlConnection))
+			using (var sqlConnection = new SqlConnection(GetConnectionString()))
+			using (var cmd = new SqlCommand("RunTsql", sqlConnection))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 				cmd.Parameters.Add("@Tsql", SqlDbType.NVarChar).Value = tsql;
@@ -324,15 +324,15 @@ namespace MD.Framework.Business
 		public List<TIdentifier> RunTsqWithIdsReturnValue(string tsql)
 		{
 			List<TIdentifier> foundIds;
-			using (SqlConnection sqlConnection = new SqlConnection(GetConnectionString()))
-			using (SqlCommand cmd = new SqlCommand("RunTsql", sqlConnection))
+			using (var sqlConnection = new SqlConnection(GetConnectionString()))
+			using (var cmd = new SqlCommand("RunTsql", sqlConnection))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
 				cmd.Parameters.Add("@Tsql", SqlDbType.NVarChar).Value = tsql;
 
 				sqlConnection.Open();
-				using (SqlDataReader sqlDataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+				using (var sqlDataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
 				{
 					foundIds = ConvertSqlDataReaderToList(sqlDataReader);
 				}
@@ -343,15 +343,15 @@ namespace MD.Framework.Business
 		public List<TEntity> RunTsqWithEntitiesReturnValue(string tsql)
 		{
 			List<TEntity> foundEntities;
-			using (SqlConnection sqlConnection = new SqlConnection(GetConnectionString()))
-			using (SqlCommand cmd = new SqlCommand("RunTsql", sqlConnection))
+			using (var sqlConnection = new SqlConnection(GetConnectionString()))
+			using (var cmd = new SqlCommand("RunTsql", sqlConnection))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
 				cmd.Parameters.Add("@Tsql", SqlDbType.NVarChar).Value = tsql;
 
 				sqlConnection.Open();
-				using (SqlDataReader sqlDataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+				using (var sqlDataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
 				{
 					foundEntities = ConvertSqlDataReaderToEntities(sqlDataReader);
 				}
@@ -381,18 +381,18 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Select)]
 		public IQueryable<TEntity> SelectAll(List<TIdentifier> ids, List<string> includeNavigationProperties = null)
 		{
-			Type iCollectionType = typeof(ICollection<TIdentifier>);
-			ParameterExpression parameterExpression = Expression.Parameter(EntityType, "q");
-			ConstantExpression constantExpression = Expression.Constant(ids, iCollectionType);
-			MemberExpression memberExpression = Expression.Property(parameterExpression, IdentifierColumnName);
-			MethodInfo containsMethodInfo = iCollectionType.GetMethod("Contains", new[] { IdentifierType });
+			var iCollectionType = typeof(ICollection<TIdentifier>);
+			var parameterExpression = Expression.Parameter(EntityType, "q");
+			var constantExpression = Expression.Constant(ids, iCollectionType);
+			var memberExpression = Expression.Property(parameterExpression, IdentifierColumnName);
+			var containsMethodInfo = iCollectionType.GetMethod("Contains", new[] { IdentifierType });
 
-			MethodCallExpression methodCallExpression = Expression.Call(constantExpression, containsMethodInfo, memberExpression);
-			Expression<Func<TEntity, bool>> lambdaExpression = Expression.Lambda<Func<TEntity, bool>>(methodCallExpression, parameterExpression);
+			var methodCallExpression = Expression.Call(constantExpression, containsMethodInfo, memberExpression);
+			var lambdaExpression = Expression.Lambda<Func<TEntity, bool>>(methodCallExpression, parameterExpression);
 
 			if (includeNavigationProperties == null || !includeNavigationProperties.Any())
 				return DbSet.Where(lambdaExpression);
-			DbQuery<TEntity> query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
+			var query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
 
 			return query.Where(lambdaExpression);
 		}
@@ -402,7 +402,7 @@ namespace MD.Framework.Business
 		{
 			if (includeNavigationProperties == null || !includeNavigationProperties.Any())
 				return DbSet.Where(predicate);
-			DbQuery<TEntity> query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
+			var query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
 			return query.Where(predicate);
 		}
 
@@ -423,7 +423,7 @@ namespace MD.Framework.Business
 			}
 			else
 			{
-				DbQuery<TEntity> query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
+				var query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
 				if (orderByExpression != null)
 					result = orderByFunc(query.Where(predicate));
 				else
@@ -454,7 +454,7 @@ namespace MD.Framework.Business
 				result = DbSet.FirstOrDefault(predicate);
 			else
 			{
-				DbQuery<TEntity> query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
+				var query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
 				result = query.FirstOrDefault(predicate);
 			}
 
@@ -470,9 +470,9 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Select)]
 		public TEntity SelectBy(TIdentifier identifier, List<string> includeNavigationProperties = null)
 		{
-			ParameterExpression parameter = Expression.Parameter(EntityType, "q");
-			MemberExpression propertyAccess = Expression.MakeMemberAccess(parameter, IdentifierPropertyInfo);
-			ConstantExpression rightExpr = Expression.Constant(identifier, IdentifierType);
+			var parameter = Expression.Parameter(EntityType, "q");
+			var propertyAccess = Expression.MakeMemberAccess(parameter, IdentifierPropertyInfo);
+			var rightExpr = Expression.Constant(identifier, IdentifierType);
 			return SelectBy(Expression.Lambda<Func<TEntity, bool>>(Expression.Equal(propertyAccess, rightExpr), parameter), includeNavigationProperties);
 		}
 
@@ -509,11 +509,11 @@ namespace MD.Framework.Business
 			int currentPage, int itemsPerPage,
 			List<string> includeNavigationProperties = null)
 		{
-			Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderByFunc = orderByExpression.Compile();
+			var orderByFunc = orderByExpression.Compile();
 
 			if (includeNavigationProperties == null || !includeNavigationProperties.Any())
 				return orderByFunc(DbSet.Where(predicate)).Skip(((currentPage - 1) * itemsPerPage)).Take(itemsPerPage);
-			DbQuery<TEntity> query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
+			var query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
 			return orderByFunc(query.Where(predicate)).Skip(((currentPage - 1) * itemsPerPage)).Take(itemsPerPage);
 		}
 
@@ -532,11 +532,11 @@ namespace MD.Framework.Business
 		   int currentPage, int itemsPerPage,
 		   List<string> includeNavigationProperties = null)
 		{
-			Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderByFunc = orderByExpression.Compile();
+			var orderByFunc = orderByExpression.Compile();
 
 			if (includeNavigationProperties == null || !includeNavigationProperties.Any())
 				return orderByFunc(DbSet).Skip(((currentPage - 1) * itemsPerPage)).Take(itemsPerPage);
-			DbQuery<TEntity> query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
+			var query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
 			return orderByFunc(query).Skip(((currentPage - 1) * itemsPerPage)).Take(itemsPerPage);
 		}
 
@@ -548,7 +548,7 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Select)]
 		public int CountOfPage(Expression<Func<TEntity, bool>> predicate, int itemPerPage)
 		{
-			int allItemsCount = SelectCount(predicate);
+			var allItemsCount = SelectCount(predicate);
 			return (allItemsCount % itemPerPage) == 0
 					   ? (allItemsCount / itemPerPage)
 					   : (allItemsCount / itemPerPage) + 1;
@@ -563,7 +563,7 @@ namespace MD.Framework.Business
 		[DataObjectMethod(DataObjectMethodType.Select)]
 		public int CountOfPage(int itemPerPage)
 		{
-			int allItemsCount = SelectCount();
+			var allItemsCount = SelectCount();
 			return (allItemsCount % itemPerPage) == 0
 					   ? (allItemsCount / itemPerPage)
 					   : (allItemsCount / itemPerPage) + 1;
@@ -582,7 +582,7 @@ namespace MD.Framework.Business
 			try
 			{
 				if (entities != null)
-					foreach (TEntity entity in entities)
+					foreach (var entity in entities)
 						BeforeUpdateOrSaveChangesOrAddOrInsert(entity);
 				Context.SaveChanges();
 			}
@@ -611,18 +611,17 @@ namespace MD.Framework.Business
 
 		#region FullTextSearch
 
-		public List<TEntity> FullTextSearch(string searchText, string conditionTSql, int page, int itemsPerPage,
-			 List<Expression<Func<TEntity, string>>> columnsForSearching, List<KeyValuePair<Expression<Func<TEntity, object>>, SortDirection>> sortingsValuePairs)
+		public List<TEntity> FullTextSearch(string searchText, string conditionTSql, int page, int itemsPerPage, List<Expression<Func<TEntity, string>>> columnsForSearching, List<KeyValuePair<Expression<Func<TEntity, object>>, SortDirection>> sortingsValuePairs)
 		{
 			searchText = searchText.Trim();
 			if (string.IsNullOrEmpty(searchText))
 				throw new Exception("searchText نباید خالی باشد");
 
-			string columnsToSearch = columnsForSearching.Select(expression => expression.Body.ToString().Replace("Convert", "").Replace(")", "").Replace("(", "")).Aggregate(string.Empty, (current, s) => current + string.Format("{0}, ", s.Remove(0, s.IndexOf('.') + 1)));
+			var columnsToSearch = columnsForSearching.Select(expression => expression.Body.ToString().Replace("Convert", "").Replace(")", "").Replace("(", "")).Aggregate(string.Empty, (current, s) => current + string.Format("{0}, ", s.Remove(0, s.IndexOf('.') + 1)));
 			columnsToSearch = columnsToSearch.Remove(columnsToSearch.LastIndexOf(','));
 			if (string.IsNullOrWhiteSpace(columnsToSearch)) return null;
 
-			string orderingString = string.Empty;
+			var orderingString = string.Empty;
 			foreach (var item in sortingsValuePairs)
 			{
 				var columnName = item.Key.Body.ToString().Replace("Convert", "").Replace(")", "").Replace("(", "");
@@ -631,8 +630,8 @@ namespace MD.Framework.Business
 			}
 			orderingString = orderingString.Remove(orderingString.LastIndexOf(','));
 
-			using (SqlConnection sqlConnection = new SqlConnection(GetConnectionString()))
-			using (SqlCommand cmd = new SqlCommand("FullTextSearch", sqlConnection))
+			using (var sqlConnection = new SqlConnection(GetConnectionString()))
+			using (var cmd = new SqlCommand("FullTextSearch", sqlConnection))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
@@ -646,7 +645,7 @@ namespace MD.Framework.Business
 
 				sqlConnection.Open();
 				List<TEntity> entities;
-				using (SqlDataReader sqlDataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+				using (var sqlDataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection))
 				{
 					entities = ConvertSqlDataReaderToEntities(sqlDataReader);
 				}
@@ -659,11 +658,11 @@ namespace MD.Framework.Business
 			searchText = searchText.Trim();
 			if (string.IsNullOrEmpty(searchText))
 				throw new Exception("searchText نباید خالی باشد");
-			string columnsTosearch = columnsForSearching.Select(expression => expression.Body.ToString().Replace("Convert", "").Replace(")", "").Replace("(", "")).Aggregate(string.Empty, (current, s) => current + string.Format("{0}, ", s.Remove(0, s.IndexOf('.') + 1)));
+			var columnsTosearch = columnsForSearching.Select(expression => expression.Body.ToString().Replace("Convert", "").Replace(")", "").Replace("(", "")).Aggregate(string.Empty, (current, s) => current + string.Format("{0}, ", s.Remove(0, s.IndexOf('.') + 1)));
 			columnsTosearch = columnsTosearch.Remove(columnsTosearch.LastIndexOf(','));
 
-			using (SqlConnection sqlConnection = new SqlConnection(GetConnectionString()))
-			using (SqlCommand cmd = new SqlCommand("FullTextSearchCount", sqlConnection))
+			using (var sqlConnection = new SqlConnection(GetConnectionString()))
+			using (var cmd = new SqlCommand("FullTextSearchCount", sqlConnection))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
@@ -678,13 +677,13 @@ namespace MD.Framework.Business
 
 		public List<TEntity> ConvertSqlDataReaderToEntities(SqlDataReader sqlDataReader)
 		{
-			List<TEntity> entities = new List<TEntity>();
-			PropertyInfo[] props = EntityType.GetProperties();
+			var entities = new List<TEntity>();
+			var props = EntityType.GetProperties();
 
 			while (sqlDataReader.Read())
 			{
-				TEntity entity = Activator.CreateInstance<TEntity>();
-				foreach (PropertyInfo col in props)
+				var entity = Activator.CreateInstance<TEntity>();
+				foreach (var col in props)
 				{
 					try
 					{
@@ -704,7 +703,7 @@ namespace MD.Framework.Business
 		}
 		public List<TIdentifier> ConvertSqlDataReaderToList(IDataReader dataReader)
 		{
-			List<TIdentifier> list = new List<TIdentifier>();
+			var list = new List<TIdentifier>();
 			while (dataReader.Read())
 				list.Add((TIdentifier)dataReader.GetValue(0));
 			return list;
@@ -741,9 +740,9 @@ namespace MD.Framework.Business
 
 		void GetExceptions(Exception ex)
 		{
-			Exception exception = ex;
-			StackTrace stackTrace = new StackTrace(1);
-			string exceptionMessage = string.Format("Exception at '{0}', '{1}': {2}{3}",
+			var exception = ex;
+			var stackTrace = new StackTrace(1);
+			var exceptionMessage = string.Format("Exception at '{0}', '{1}': {2}{3}",
 				EntityType.Name, stackTrace.GetFrame(0).GetMethod().Name, Environment.NewLine, ex.Message);
 			while (exception.InnerException != null)
 			{
@@ -751,17 +750,17 @@ namespace MD.Framework.Business
 				exception = exception.InnerException;
 			}
 
-			DbEntityValidationException dbEntityValidationException = ex as DbEntityValidationException;
+			var dbEntityValidationException = ex as DbEntityValidationException;
 			if (dbEntityValidationException == null || dbEntityValidationException.EntityValidationErrors == null || !dbEntityValidationException.EntityValidationErrors.Any())
 				throw new Exception(exceptionMessage, ex);
 
 			exceptionMessage += Environment.NewLine;
 
-			List<DbEntityValidationResult> dbEntityValidationResults = dbEntityValidationException.EntityValidationErrors.ToList();
-			foreach (DbEntityValidationResult dbEntityValidationResult in dbEntityValidationResults)
+			var dbEntityValidationResults = dbEntityValidationException.EntityValidationErrors.ToList();
+			foreach (var dbEntityValidationResult in dbEntityValidationResults)
 			{
 				var entityName = dbEntityValidationResult.Entry.Entity.GetType().Name;
-				foreach (DbValidationError validationError in dbEntityValidationResult.ValidationErrors)
+				foreach (var validationError in dbEntityValidationResult.ValidationErrors)
 				{
 					exceptionMessage += string.Format("{0}EntityValidationError: PropertyName='{1}' in '{2}', {3}",
 						Environment.NewLine, validationError.PropertyName, entityName, validationError.ErrorMessage);

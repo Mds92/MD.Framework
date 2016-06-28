@@ -35,16 +35,16 @@ namespace MD.Framework.Business
 		}
 		public static void RewriteFullTextQuery(DbCommand cmd)
 		{
-			string text = cmd.CommandText;
-			for (int i = 0; i < cmd.Parameters.Count; i++)
+			var text = cmd.CommandText;
+			for (var i = 0; i < cmd.Parameters.Count; i++)
 			{
-				DbParameter parameter = cmd.Parameters[i];
+				var parameter = cmd.Parameters[i];
 				if (!parameter.DbType.In(DbType.String, DbType.AnsiString, DbType.StringFixedLength, DbType.AnsiStringFixedLength))
 					continue;
 				if (parameter.Value == DBNull.Value)
 					continue;
 				var value = (string)parameter.Value;
-				if (value.IndexOf(FullTextPrefix) < 0) continue;
+				if (value.IndexOf(FullTextPrefix, StringComparison.InvariantCultureIgnoreCase) < 0) continue;
 				parameter.Size = 4096;
 				parameter.DbType = DbType.AnsiStringFixedLength;
 				value = value.Replace(FullTextPrefix, ""); // remove prefix we added n linq query
