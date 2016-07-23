@@ -300,10 +300,11 @@ namespace MD.Framework.Business
             return matchs[0].Value;
         }
 
-        public string GetConnectionString()
+        public virtual string GetConnectionString()
         {
-            using (EntityConnection connection = new EntityConnection(Context.Database.Connection.ConnectionString))
-                return connection.StoreConnection.ConnectionString;
+            var sqlConnectionStringBuilder =  new SqlConnectionStringBuilder(Context.Database.Connection.ConnectionString);
+            sqlConnectionStringBuilder.Remove("Application Name");
+            return sqlConnectionStringBuilder.ConnectionString;
         }
 
         public string GetCurrentEntityTableName()
