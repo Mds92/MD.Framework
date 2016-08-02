@@ -11,7 +11,7 @@ namespace MD.Framework.Utility
     public class ConditionTree 
     {
 		[DataMember]
-		public long Id { get; internal set; }
+		public Guid Id { get; internal set; }
 
         public ConditionTree()
         {
