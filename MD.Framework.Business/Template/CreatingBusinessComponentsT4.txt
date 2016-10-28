@@ -1,0 +1,39 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="MultipleOutputHelper.ttinclude" #>
+<#@ assembly name="$(SolutionDir)Smartiz3.Data\bin\Debug\Smartiz3.Data.dll" #>
+<#@ import namespace="Smartiz3.Data" #>
+// By Mohammad Dayyan
+<#
+var manager = Manager.Create(Host, GenerationEnvironment);
+var @namespace = "Smartiz3.Data";
+
+var assembly = typeof(Smartiz3.Data.Color).Assembly;
+var allEntityTypes = assembly.GetTypes().Where(t => t.IsClass && t.Namespace == @namespace)
+                    .ToArray();
+foreach (var entity in allEntityTypes)
+{
+	var entityName = string.Format("{0}{1}", entity.Name[0].ToString().ToLower(), entity.Name.Remove(0,1));
+	manager.StartNewFile(entity.Name + "BusinessComponent.cs");
+	#>
+using Smartiz3.Business;
+
+namespace Smartiz3.BusinessComponent
+{
+	public class <#= entity.Name #>BusinessComponent : BaseBusinessComponent
+	{
+		private readonly <#= entity.Name #>BusinessObject _<#= entityName #>BusinessObject;
+		public <#= entity.Name #>BusinessComponent(<#= entity.Name #>BusinessObject <#= entityName #>BusinessObject)
+		{
+			_<#= entityName #>BusinessObject = <#= entityName #>BusinessObject;
+		}
+	}
+}<#
+	manager.EndBlock();
+}
+
+#>
+<# manager.Process(true); #>

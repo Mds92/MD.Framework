@@ -69,7 +69,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Utility\MultipleOutputHelper.ttinclude" />
+    <None Include="Template\MultipleOutputHelper.ttinclude" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MD.Framework.Utility\MD.Framework.Utility.csproj">
@@ -79,9 +79,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Required\RunTsql-Procedure.sql" />
-    <Content Include="Utility\CreatingBusinessObjectsT4.txt">
+    <Content Include="Template\CreatingBusinessObjectsT4.txt">
       <LastGenOutput>CreatingBusinessObjectsT4.cs</LastGenOutput>
     </Content>
+    <Content Include="Template\CreatingBusinessComponentsT4.txt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
