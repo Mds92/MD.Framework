@@ -69,6 +69,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Utility\MultipleOutputHelper.ttinclude" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MD.Framework.Utility\MD.Framework.Utility.csproj">
@@ -78,6 +79,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Required\RunTsql-Procedure.sql" />
+    <Content Include="Utility\CreatingBusinessObjectsT4.txt">
+      <LastGenOutput>CreatingBusinessObjectsT4.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
