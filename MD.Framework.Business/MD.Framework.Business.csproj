@@ -79,6 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Required\RunTsql-Procedure.sql" />
+    <Content Include="Template\CreatingDtoObjectsT4.txt">
+      <LastGenOutput>CreatingBusinessObjectsT4.cs</LastGenOutput>
+    </Content>
     <Content Include="Template\CreatingBusinessObjectsT4.txt">
       <LastGenOutput>CreatingBusinessObjectsT4.cs</LastGenOutput>
     </Content>
