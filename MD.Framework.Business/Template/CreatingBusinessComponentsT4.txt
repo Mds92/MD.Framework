@@ -12,8 +12,7 @@ var manager = Manager.Create(Host, GenerationEnvironment);
 var @namespace = "Smartiz3.Data";
 
 var assembly = typeof(Smartiz3.Data.Color).Assembly;
-var allEntityTypes = assembly.GetTypes().Where(t => t.IsClass && t.Namespace == @namespace)
-                    .ToArray();
+var allEntityTypes = assembly.GetTypes().Where(t => t.IsClass && t.Namespace == @namespace).ToArray();
 foreach (var entity in allEntityTypes)
 {
 	var entityName = string.Format("{0}{1}", entity.Name[0].ToString().ToLower(), entity.Name.Remove(0,1));
@@ -30,6 +29,9 @@ namespace Smartiz3.BusinessComponent
 		{
 			_<#= entityName #>BusinessObject = <#= entityName #>BusinessObject;
 		}
+
+        public BusinessObject<<#= entity.Name #>, int> BusinessObject => _<#= entityName #>BusinessObject;
+
 	}
 }<#
 	manager.EndBlock();
