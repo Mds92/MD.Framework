@@ -58,6 +58,7 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ExpressionInfo.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\EntityFlagAttribute.cs" />
     <Compile Include="Helpers\PrimaryKeyAttribute.cs" />

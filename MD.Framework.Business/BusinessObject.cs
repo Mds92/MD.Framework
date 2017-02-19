@@ -16,17 +16,18 @@ using MD.Framework.Utility;
 
 namespace MD.Framework.Business
 {
-    public abstract class BusinessObject<TEntity, TIdentifier> : IDisposable where TEntity : class
+    public abstract class BusinessObject<TEntity, TIdentifier>
+            where TEntity : class
+            where TIdentifier : struct
     {
         #region Properties and Fields
 
         public DbContext Context { get; set; }
         private DbSet<TEntity> DbSet { get; set; }
 
-        public virtual string IdentifierColumnName { get { return "Id"; } }
+        public virtual string IdentifierColumnName => "Id";
 
         private Type _entityType;
-
         private Type EntityType
         {
             get
@@ -38,7 +39,6 @@ namespace MD.Framework.Business
         }
 
         private Type _identifierType;
-
         private Type IdentifierType
         {
             get
@@ -50,7 +50,6 @@ namespace MD.Framework.Business
         }
 
         private PropertyInfo _identifierPropertyInfo;
-
         private PropertyInfo IdentifierPropertyInfo
         {
             get
@@ -58,7 +57,8 @@ namespace MD.Framework.Business
                 if (_identifierPropertyInfo != null) return _identifierPropertyInfo;
                 _identifierPropertyInfo = EntityType.GetProperty(IdentifierColumnName);
                 if (_identifierPropertyInfo == null)
-                    throw new Exception(string.Format("ستونی با نام '{0}' در موجودیت '{1}' وجود ندارد", IdentifierColumnName, EntityType.Name));
+                    throw new Exception(
+                        $"ستونی با نام '{IdentifierColumnName}' در موجودیت '{EntityType.Name}' وجود ندارد");
                 return _identifierPropertyInfo;
             }
         }
@@ -85,9 +85,15 @@ namespace MD.Framework.Business
             {
                 BeforeRemoveOrDelete(entity);
                 DbSet.Remove(entity);
-                this.Context.Entry(entity).State = EntityState.Deleted;
+                Context.Entry(entity).State = EntityState.Deleted;
             }
             SaveChanges();
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Delete)]
+        public void Delete(ExpressionInfo<TEntity> expressionInfo)
+        {
+            Delete(expressionInfo.Expression);
         }
 
         [DataObjectMethod(DataObjectMethodType.Delete)]
@@ -110,7 +116,7 @@ namespace MD.Framework.Business
             foreach (var entity in entities)
             {
                 BeforeRemoveOrDelete(entity);
-                this.Context.Entry(entity).State = EntityState.Deleted;
+                Context.Entry(entity).State = EntityState.Deleted;
                 DbSet.Remove(entity);
             }
             SaveChanges();
@@ -130,9 +136,53 @@ namespace MD.Framework.Business
             {
                 BeforeRemoveOrDelete(entity);
                 DbSet.Remove(entity);
-                this.Context.Entry(entity).State = EntityState.Deleted;
+                Context.Entry(entity).State = EntityState.Deleted;
             }
             SaveChanges();
+        }
+
+        // ----------- Async -----------------
+
+        [DataObjectMethod(DataObjectMethodType.Delete)]
+        public Task DeleteAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Task.Run(() => Delete(predicate));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Delete)]
+        public Task DeleteAsync(ExpressionInfo<TEntity> expressionInfo)
+        {
+            return Task.Run(() => Delete(expressionInfo));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Delete)]
+        public Task DeleteAsync(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
+        {
+            return Task.Run(() => Delete(servicePredicateBuilder));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Delete)]
+        public Task DeleteAsync(TIdentifier identifier)
+        {
+            return Task.Run(() => Delete(identifier));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Delete)]
+        public Task DeleteAsync(IEnumerable<TIdentifier> identifiers)
+        {
+            return Task.Run(() => Delete(identifiers));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Delete)]
+        public Task DeleteAsync(TEntity entity)
+        {
+            return Task.Run(() => Delete(entity));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Delete)]
+        public Task DeleteAsync(IEnumerable<TEntity> entities)
+        {
+            return Task.Run(() => Delete(entities));
         }
 
         #endregion
@@ -148,8 +198,14 @@ namespace MD.Framework.Business
             {
                 BeforeRemoveOrDelete(entity);
                 DbSet.Remove(entity);
-                this.Context.Entry(entity).State = EntityState.Deleted;
+                Context.Entry(entity).State = EntityState.Deleted;
             }
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Delete)]
+        public void Remove(ExpressionInfo<TEntity> expressionInfo)
+        {
+            Remove(expressionInfo.Expression);
         }
 
         [DataObjectMethod(DataObjectMethodType.Delete)]
@@ -165,7 +221,7 @@ namespace MD.Framework.Business
             if (entity == null) return;
             BeforeRemoveOrDelete(entity);
             DbSet.Remove(entity);
-            this.Context.Entry(entity).State = EntityState.Deleted;
+            Context.Entry(entity).State = EntityState.Deleted;
         }
 
         [DataObjectMethod(DataObjectMethodType.Delete)]
@@ -176,7 +232,7 @@ namespace MD.Framework.Business
             {
                 BeforeRemoveOrDelete(entity);
                 DbSet.Remove(entity);
-                this.Context.Entry(entity).State = EntityState.Deleted;
+                Context.Entry(entity).State = EntityState.Deleted;
             }
         }
 
@@ -185,7 +241,7 @@ namespace MD.Framework.Business
         {
             BeforeRemoveOrDelete(entity);
             DbSet.Remove(entity);
-            this.Context.Entry(entity).State = EntityState.Deleted;
+            Context.Entry(entity).State = EntityState.Deleted;
         }
 
         [DataObjectMethod(DataObjectMethodType.Delete)]
@@ -196,7 +252,7 @@ namespace MD.Framework.Business
             {
                 BeforeRemoveOrDelete(entity);
                 DbSet.Remove(entity);
-                this.Context.Entry(entity).State = EntityState.Deleted;
+                Context.Entry(entity).State = EntityState.Deleted;
             }
         }
 
@@ -221,7 +277,7 @@ namespace MD.Framework.Business
                 BeforeAddOrInsert(entity);
                 BeforeUpdateOrSaveChangesOrAddOrInsert(entity);
                 DbSet.Add(entity);
-                this.Context.Entry(entity).State = EntityState.Added;
+                Context.Entry(entity).State = EntityState.Added;
             }
         }
 
@@ -238,10 +294,24 @@ namespace MD.Framework.Business
             {
                 BeforeAddOrInsert(entity);
                 DbSet.Add(entity);
-                this.Context.Entry(entity).State = EntityState.Added;
+                Context.Entry(entity).State = EntityState.Added;
             }
             SaveChanges(entities);
             return entities;
+        }
+
+        // ----------- Async -----------------
+
+        [DataObjectMethod(DataObjectMethodType.Insert, true)]
+        public Task<TEntity> InsertAsync(TEntity entity)
+        {
+            return Task.Run(() => Insert(entity));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Insert, true)]
+        public Task<List<TEntity>> InsertAsync(List<TEntity> entities)
+        {
+            return Task.Run(() => Insert(entities));
         }
 
         #endregion
@@ -251,7 +321,7 @@ namespace MD.Framework.Business
         [DataObjectMethod(DataObjectMethodType.Select)]
         public long SelectNextId()
         {
-            var tableName = this.GetCurrentEntityTableName();
+            var tableName = GetCurrentEntityTableName();
             const string command = @"SELECT IDENT_CURRENT ({0}) AS Current_Identity;";
             var id = (Context as IObjectContextAdapter).ObjectContext.ExecuteStoreQuery<decimal>(command, tableName).FirstOrDefault();
             return Convert.ToInt64(id) + 1;
@@ -266,17 +336,18 @@ namespace MD.Framework.Business
 
             var member = propertyLambda.Body as MemberExpression;
             if (member == null)
-                throw new ArgumentException(string.Format("Expression '{0}' refers to a method, not a property.", propertyLambda));
+                throw new ArgumentException($"Expression '{propertyLambda}' refers to a method, not a property.");
 
             var propInfo = member.Member as PropertyInfo;
             if (propInfo == null)
-                throw new ArgumentException(string.Format("Expression '{0}' refers to a field, not a property.", propertyLambda));
+                throw new ArgumentException($"Expression '{propertyLambda}' refers to a field, not a property.");
 
             if (propInfo.ReflectedType == null)
-                throw new ArgumentException(string.Format("Property '{0}' dosen't have a ReflectedType.", propInfo.Name));
+                throw new ArgumentException($"Property '{propInfo.Name}' dosen't have a ReflectedType.");
 
             if (EntityType != propInfo.ReflectedType && !EntityType.IsSubclassOf(propInfo.ReflectedType))
-                throw new ArgumentException(string.Format("Expresion '{0}' refers to a property that is not from type {1}.", propertyLambda, EntityType));
+                throw new ArgumentException(
+                    $"Expresion '{propertyLambda}' refers to a property that is not from type {EntityType}.");
 
             var parameterExpression = Expression.Parameter(EntityType, "q");
 
@@ -367,14 +438,14 @@ namespace MD.Framework.Business
         // ----------- Async -----------------
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<long> SelectNextIdAsync()
+        public Task<long> SelectNextIdAsync()
         {
-            return await Task.Run(() => SelectNextId());
+            return Task.Run(() => SelectNextId());
         }
 
-        public async Task<bool> IsUniqueAsync<TProperty>(Expression<Func<TEntity, TProperty>> propertyLambda, TProperty value, TIdentifier identifier)
+        public Task<bool> IsUniqueAsync<TProperty>(Expression<Func<TEntity, TProperty>> propertyLambda, TProperty value, TIdentifier identifier)
         {
-            return await Task.Run(() => IsUnique(propertyLambda, value, identifier));
+            return Task.Run(() => IsUnique(propertyLambda, value, identifier));
         }
 
 
@@ -389,8 +460,7 @@ namespace MD.Framework.Business
         {
             IQueryable<TEntity> result;
             if (includeNavigationProperties != null && includeNavigationProperties.Any())
-                result = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet,
-                    (current, property) => current.Include(property));
+                result = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
             else
                 result = DbSet;
             return result;
@@ -459,36 +529,51 @@ namespace MD.Framework.Business
             return SelectAll(servicePredicateBuilder.Criteria.GetExpression(), orderByExpression, servicePredicateBuilder.IncludedNavigationProperties);
         }
 
+        [DataObjectMethod(DataObjectMethodType.Select)]
+        public IQueryable<TEntity> SelectAll(ExpressionInfo<TEntity> expressionInfo)
+        {
+            Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression = null;
+            if (expressionInfo.SortCondition != null)
+                orderByExpression = expressionInfo.SortCondition.GetIQueryableSortingExpression();
+            return SelectAll(expressionInfo.Expression, orderByExpression, expressionInfo.IncludedNavigationProperties);
+        }
+
         // ----------- Async -----------------
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<IQueryable<TEntity>> SelectAllAsync(List<string> includeNavigationProperties = null)
+        public Task<IQueryable<TEntity>> SelectAllAsync(List<string> includeNavigationProperties = null)
         {
-            return await Task.Run(() => SelectAll(includeNavigationProperties));
+            return Task.Run(() => SelectAll(includeNavigationProperties));
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<IQueryable<TEntity>> SelectAllAsync(List<TIdentifier> ids, List<string> includeNavigationProperties = null)
+        public Task<IQueryable<TEntity>> SelectAllAsync(List<TIdentifier> ids, List<string> includeNavigationProperties = null)
         {
-            return await Task.Run(() => SelectAllAsync(ids, includeNavigationProperties));
+            return Task.Run(() => SelectAll(ids, includeNavigationProperties));
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<IQueryable<TEntity>> SelectAllAsync(Expression<Func<TEntity, bool>> predicate, List<string> includeNavigationProperties = null)
+        public Task<IQueryable<TEntity>> SelectAllAsync(Expression<Func<TEntity, bool>> predicate, List<string> includeNavigationProperties = null)
         {
-            return await Task.Run(() => SelectAll(predicate, includeNavigationProperties));
+            return Task.Run(() => SelectAll(predicate, includeNavigationProperties));
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<IQueryable<TEntity>> SelectAllAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, List<string> includeNavigationProperties = null)
+        public Task<IQueryable<TEntity>> SelectAllAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, List<string> includeNavigationProperties = null)
         {
-            return await Task.Run(() => SelectAll(predicate, orderByExpression, includeNavigationProperties));
+            return Task.Run(() => SelectAll(predicate, orderByExpression, includeNavigationProperties));
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<IQueryable<TEntity>> SelectAllAsync(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
+        public Task<IQueryable<TEntity>> SelectAllAsync(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
         {
-            return await Task.Run(() => SelectAll(servicePredicateBuilder));
+            return Task.Run(() => SelectAll(servicePredicateBuilder));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select)]
+        public Task<IQueryable<TEntity>> SelectAllAsync(ExpressionInfo<TEntity> expressionInfo)
+        {
+            return Task.Run(() => SelectAll(expressionInfo));
         }
 
         #endregion
@@ -499,7 +584,6 @@ namespace MD.Framework.Business
         public TEntity SelectBy(Expression<Func<TEntity, bool>> predicate, List<string> includeNavigationProperties = null)
         {
             TEntity result;
-
             if (includeNavigationProperties == null || !includeNavigationProperties.Any())
                 result = DbSet.FirstOrDefault(predicate);
             else
@@ -507,7 +591,6 @@ namespace MD.Framework.Business
                 var query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
                 result = query.FirstOrDefault(predicate);
             }
-
             return result;
         }
 
@@ -515,6 +598,12 @@ namespace MD.Framework.Business
         public TEntity SelectBy(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
         {
             return SelectBy(servicePredicateBuilder.Criteria.GetExpression(), servicePredicateBuilder.IncludedNavigationProperties);
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select)]
+        public TEntity SelectBy(ExpressionInfo<TEntity> expressionInfo)
+        {
+            return SelectBy(expressionInfo.Expression, expressionInfo.IncludedNavigationProperties);
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
@@ -529,21 +618,27 @@ namespace MD.Framework.Business
         // ----------- Async -----------------
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<TEntity> SelectByAsync(Expression<Func<TEntity, bool>> predicate, List<string> includeNavigationProperties = null)
+        public Task<TEntity> SelectByAsync(Expression<Func<TEntity, bool>> predicate, List<string> includeNavigationProperties = null)
         {
-            return await Task.Run(() => SelectBy(predicate, includeNavigationProperties));
+            return Task.Run(() => SelectBy(predicate, includeNavigationProperties));
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<TEntity> SelectByAsync(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
+        public Task<TEntity> SelectByAsync(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
         {
-            return await Task.Run(() => SelectBy(servicePredicateBuilder));
+            return Task.Run(() => SelectBy(servicePredicateBuilder));
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<TEntity> SelectByAsync(TIdentifier identifier, List<string> includeNavigationProperties = null)
+        public Task<TEntity> SelectByAsync(ExpressionInfo<TEntity> expressionInfo)
         {
-            return await Task.Run(() => SelectBy(identifier, includeNavigationProperties));
+            return Task.Run(() => SelectBy(expressionInfo));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select)]
+        public Task<TEntity> SelectByAsync(TIdentifier identifier, List<string> includeNavigationProperties = null)
+        {
+            return Task.Run(() => SelectBy(identifier, includeNavigationProperties));
         }
 
         #endregion
@@ -568,24 +663,36 @@ namespace MD.Framework.Business
             return SelectCount(servicePredicateBuilder.Criteria.GetExpression());
         }
 
+        [DataObjectMethod(DataObjectMethodType.Select)]
+        public int SelectCount(ExpressionInfo<TEntity> expressionInfo)
+        {
+            return SelectCount(expressionInfo.Expression);
+        }
+
         // ----------- Async -----------------
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<int> SelectCountAsync()
+        public Task<int> SelectCountAsync()
         {
-            return await DbSet.CountAsync();
+            return DbSet.CountAsync();
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<int> SelectCountAsync(Expression<Func<TEntity, bool>> predicate)
+        public Task<int> SelectCountAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await DbSet.CountAsync(predicate);
+            return DbSet.CountAsync(predicate);
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<int> SelectCountAsync(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
+        public Task<int> SelectCountAsync(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
         {
-            return await Task.Run(() => SelectCount(servicePredicateBuilder.Criteria.GetExpression()));
+            return SelectCountAsync(servicePredicateBuilder.Criteria.GetExpression());
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select)]
+        public Task<int> SelectCountAsync(ExpressionInfo<TEntity> expressionInfo)
+        {
+            return SelectCountAsync(expressionInfo.Expression);
         }
 
         #endregion
@@ -607,9 +714,16 @@ namespace MD.Framework.Business
         public IQueryable<TEntity> SelectPage(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
         {
             if (servicePredicateBuilder.SortCondition == null)
-                throw new Exception(string.Format("برای گرفتن صفحه ای از '{0}' باید مرتب سازی را تعیین نمایید", EntityType.Name));
+                throw new Exception($"برای گرفتن صفحه ای از '{EntityType.Name}' باید مرتب سازی را تعیین نمایید");
             return SelectPage(servicePredicateBuilder.Criteria.GetExpression(), servicePredicateBuilder.SortCondition.GetIQueryableSortingExpression(),
                 servicePredicateBuilder.PaginationData.PageNumber, servicePredicateBuilder.PaginationData.ItemsPerPage, servicePredicateBuilder.IncludedNavigationProperties);
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select)]
+        public IQueryable<TEntity> SelectPage(ExpressionInfo<TEntity> expressionInfo)
+        {
+            if (expressionInfo.SortCondition == null) throw new Exception($"برای گرفتن صفحه ای از '{EntityType.Name}' باید مرتب سازی را تعیین نمایید");
+            return SelectPage(expressionInfo.Expression, expressionInfo.SortCondition.GetIQueryableSortingExpression(), expressionInfo.PaginationData.PageNumber, expressionInfo.PaginationData.ItemsPerPage, expressionInfo.IncludedNavigationProperties);
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
@@ -626,21 +740,27 @@ namespace MD.Framework.Business
         // ----------- Async -----------------
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<IQueryable<TEntity>> SelectPageAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, int currentPage, int itemsPerPage, List<string> includeNavigationProperties = null)
+        public Task<IQueryable<TEntity>> SelectPageAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, int currentPage, int itemsPerPage, List<string> includeNavigationProperties = null)
         {
-            return await Task.Run(() => SelectPage(predicate, orderByExpression, currentPage, itemsPerPage, includeNavigationProperties));
+            return Task.Run(() => SelectPage(predicate, orderByExpression, currentPage, itemsPerPage, includeNavigationProperties));
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<IQueryable<TEntity>> SelectPageAsync(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
+        public Task<IQueryable<TEntity>> SelectPageAsync(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
         {
-            return await Task.Run(() => SelectPage(servicePredicateBuilder));
+            return Task.Run(() => SelectPage(servicePredicateBuilder));
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<IQueryable<TEntity>> SelectPageAsync(Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, int currentPage, int itemsPerPage, List<string> includeNavigationProperties = null)
+        public Task<IQueryable<TEntity>> SelectPageAsync(ExpressionInfo<TEntity> expressionInfo)
         {
-            return await Task.Run(() => SelectPage(orderByExpression, currentPage, itemsPerPage, includeNavigationProperties));
+            return Task.Run(() => SelectPage(expressionInfo));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select)]
+        public Task<IQueryable<TEntity>> SelectPageAsync(Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, int currentPage, int itemsPerPage, List<string> includeNavigationProperties = null)
+        {
+            return Task.Run(() => SelectPage(orderByExpression, currentPage, itemsPerPage, includeNavigationProperties));
         }
 
         #endregion
@@ -663,6 +783,12 @@ namespace MD.Framework.Business
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
+        public int CountOfPage(ExpressionInfo<TEntity> expressionInfo)
+        {
+            return CountOfPage(expressionInfo.Expression, expressionInfo.PaginationData.ItemsPerPage);
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select)]
         public int CountOfPage(int itemPerPage)
         {
             var allItemsCount = SelectCount();
@@ -674,21 +800,27 @@ namespace MD.Framework.Business
         // ----------- Async -----------------
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<int> CountOfPageAsync(Expression<Func<TEntity, bool>> predicate, int itemPerPage)
+        public Task<int> CountOfPageAsync(Expression<Func<TEntity, bool>> predicate, int itemPerPage)
         {
-            return await Task.Run(() => CountOfPage(predicate, itemPerPage));
+            return Task.Run(() => CountOfPage(predicate, itemPerPage));
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<int> CountOfPageAsync(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
+        public Task<int> CountOfPageAsync(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
         {
-            return await Task.Run(() => CountOfPage(servicePredicateBuilder.Criteria.GetExpression(), servicePredicateBuilder.PaginationData.ItemsPerPage));
+            return Task.Run(() => CountOfPage(servicePredicateBuilder.Criteria.GetExpression(), servicePredicateBuilder.PaginationData.ItemsPerPage));
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
-        public async Task<int> CountOfPageAsync(int itemPerPage)
+        public Task<int> CountOfPageAsync(ExpressionInfo<TEntity> expressionInfo)
         {
-            return await Task.Run(() => CountOfPage(itemPerPage));
+            return Task.Run(() => CountOfPage(expressionInfo));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select)]
+        public Task<int> CountOfPageAsync(int itemPerPage)
+        {
+            return Task.Run(() => CountOfPage(itemPerPage));
         }
 
         #endregion
@@ -729,6 +861,25 @@ namespace MD.Framework.Business
             return entities;
         }
 
+        // ----------- Async -----------------
+
+        public Task SaveChangesAsync()
+        {
+            return Context.SaveChangesAsync();
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Update)]
+        public Task<TEntity> UpdateAsync(TEntity entity)
+        {
+            return Task.Run(() => Update(entity));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Update)]
+        public Task<List<TEntity>> UpdateAsync(List<TEntity> entities)
+        {
+            return Task.Run(() => Update(entities));
+        }
+
         #endregion
 
         #region FullTextSearch
@@ -739,7 +890,8 @@ namespace MD.Framework.Business
             if (string.IsNullOrEmpty(searchText))
                 throw new Exception("searchText نباید خالی باشد");
 
-            var columnsToSearch = columnsForSearching.Select(expression => expression.Body.ToString().Replace("Convert", "").Replace(")", "").Replace("(", "")).Aggregate(string.Empty, (current, s) => current + string.Format("{0}, ", s.Remove(0, s.IndexOf('.') + 1)));
+            var columnsToSearch = columnsForSearching.Select(expression => expression.Body.ToString().Replace("Convert", "").Replace(")", "").Replace("(", "")).Aggregate(string.Empty, (current, s) => current +
+                                                                                                                                                                                                        $"{s.Remove(0, s.IndexOf('.') + 1)}, ");
             columnsToSearch = columnsToSearch.Remove(columnsToSearch.LastIndexOf(','));
             if (string.IsNullOrWhiteSpace(columnsToSearch)) return null;
 
@@ -748,7 +900,8 @@ namespace MD.Framework.Business
             {
                 var columnName = item.Key.Body.ToString().Replace("Convert", "").Replace(")", "").Replace("(", "");
                 columnName = columnName.Remove(0, columnName.IndexOf('.') + 1);
-                orderingString += string.Format("{0}.{1} {2}, ", "{AlternativeTableNamePlaceHolder}", columnName, item.Value == SortDirection.Ascending ? "ASC" : "DESC");
+                orderingString +=
+                    $"{{AlternativeTableNamePlaceHolder}}.{columnName} {(item.Value == SortDirection.Ascending ? "ASC" : "DESC")}, ";
             }
             orderingString = orderingString.Remove(orderingString.LastIndexOf(','));
 
@@ -760,7 +913,7 @@ namespace MD.Framework.Business
                 cmd.Parameters.Add("@WhereExpression", SqlDbType.NVarChar).Value = conditionTSql;
                 cmd.Parameters.Add("@PageNumber", SqlDbType.Int).Value = page;
                 cmd.Parameters.Add("@ItemsPerPage", SqlDbType.Int).Value = itemsPerPage;
-                cmd.Parameters.Add("@TableName", SqlDbType.NVarChar).Value = this.GetCurrentEntityTableName();
+                cmd.Parameters.Add("@TableName", SqlDbType.NVarChar).Value = GetCurrentEntityTableName();
                 cmd.Parameters.Add("@ColumnNamesToSearch", SqlDbType.NVarChar).Value = columnsToSearch;
                 cmd.Parameters.Add("@SearchText", SqlDbType.NVarChar).Value = searchText;
                 cmd.Parameters.Add("@OrderingString", SqlDbType.NVarChar).Value = orderingString;
@@ -780,7 +933,8 @@ namespace MD.Framework.Business
             searchText = searchText.Trim();
             if (string.IsNullOrEmpty(searchText))
                 throw new Exception("searchText نباید خالی باشد");
-            var columnsTosearch = columnsForSearching.Select(expression => expression.Body.ToString().Replace("Convert", "").Replace(")", "").Replace("(", "")).Aggregate(string.Empty, (current, s) => current + string.Format("{0}, ", s.Remove(0, s.IndexOf('.') + 1)));
+            var columnsTosearch = columnsForSearching.Select(expression => expression.Body.ToString().Replace("Convert", "").Replace(")", "").Replace("(", "")).Aggregate(string.Empty, (current, s) => current +
+                                                                                                                                                                                                        $"{s.Remove(0, s.IndexOf('.') + 1)}, ");
             columnsTosearch = columnsTosearch.Remove(columnsTosearch.LastIndexOf(','));
 
             using (var sqlConnection = new SqlConnection(GetConnectionString()))
@@ -789,7 +943,7 @@ namespace MD.Framework.Business
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("@WhereExpression", SqlDbType.NVarChar).Value = conditionTSql;
-                cmd.Parameters.Add("@TableName", SqlDbType.NVarChar).Value = this.GetCurrentEntityTableName();
+                cmd.Parameters.Add("@TableName", SqlDbType.NVarChar).Value = GetCurrentEntityTableName();
                 cmd.Parameters.Add("@ColumnNamesToSearch", SqlDbType.NVarChar).Value = columnsTosearch;
                 cmd.Parameters.Add("@SearchText", SqlDbType.NVarChar).Value = searchText;
                 sqlConnection.Open();
@@ -833,50 +987,25 @@ namespace MD.Framework.Business
 
         // ----------- Async -----------------
 
-        public async Task<List<TEntity>> FullTextSearchAsync(string searchText, string conditionTSql, int page, int itemsPerPage, List<Expression<Func<TEntity, string>>> columnsForSearching, List<KeyValuePair<Expression<Func<TEntity, object>>, SortDirection>> sortingsValuePairs)
+        public Task<List<TEntity>> FullTextSearchAsync(string searchText, string conditionTSql, int page, int itemsPerPage, List<Expression<Func<TEntity, string>>> columnsForSearching, List<KeyValuePair<Expression<Func<TEntity, object>>, SortDirection>> sortingsValuePairs)
         {
-            return await Task.Run(() => FullTextSearchAsync(searchText, conditionTSql, page, itemsPerPage, columnsForSearching, sortingsValuePairs));
+            return Task.Run(() => FullTextSearch(searchText, conditionTSql, page, itemsPerPage, columnsForSearching, sortingsValuePairs));
         }
-        public async Task<int> FullTextSearchCountAsync(string searchText, string conditionTSql, List<Expression<Func<TEntity, string>>> columnsForSearching)
+        public Task<int> FullTextSearchCountAsync(string searchText, string conditionTSql, List<Expression<Func<TEntity, string>>> columnsForSearching)
         {
-            return await Task.Run(() => FullTextSearchCount(searchText, conditionTSql, columnsForSearching));
+            return Task.Run(() => FullTextSearchCount(searchText, conditionTSql, columnsForSearching));
         }
 
-        public async Task<List<TEntity>> ConvertSqlDataReaderToEntitiesAsync(SqlDataReader sqlDataReader)
+        public Task<List<TEntity>> ConvertSqlDataReaderToEntitiesAsync(SqlDataReader sqlDataReader)
         {
-            return await Task.Run(() => ConvertSqlDataReaderToEntities(sqlDataReader));
+            return Task.Run(() => ConvertSqlDataReaderToEntities(sqlDataReader));
         }
-        public async Task<List<TIdentifier>> ConvertSqlDataReaderToListAsync(IDataReader dataReader)
+        public Task<List<TIdentifier>> ConvertSqlDataReaderToListAsync(IDataReader dataReader)
         {
-            return await Task.Run(() => ConvertSqlDataReaderToList(dataReader));
+            return Task.Run(() => ConvertSqlDataReaderToList(dataReader));
         }
 
         #endregion
-
-        #endregion
-
-        #region Implementation of IDisposable
-
-        /// <summary>
-        ///   Releases all resources used by the WarrantManagement.DataExtract.Dal.ReportDataBase
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        ///   Releases all resources used by the WarrantManagement.DataExtract.Dal.ReportDataBase
-        /// </summary>
-        /// <param name="disposing"> A boolean value indicating whether or not to dispose managed resources </param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposing) return;
-            if (Context == null) return;
-            Context.Dispose();
-            Context = null;
-        }
 
         #endregion
 
@@ -884,16 +1013,15 @@ namespace MD.Framework.Business
         {
             var exception = ex;
             var stackTrace = new StackTrace(1);
-            var exceptionMessage = string.Format("Exception at '{0}', '{1}': {2}{3}",
-                EntityType.Name, stackTrace.GetFrame(0).GetMethod().Name, Environment.NewLine, ex.Message);
+            var exceptionMessage = $"Exception at '{EntityType.Name}', '{stackTrace.GetFrame(0).GetMethod().Name}': {Environment.NewLine}{ex.Message}";
             while (exception.InnerException != null)
             {
-                exceptionMessage += string.Format("{0}InnerMessage: {1}", Environment.NewLine, exception.InnerException.Message);
+                exceptionMessage += $"{Environment.NewLine}InnerMessage: {exception.InnerException.Message}";
                 exception = exception.InnerException;
             }
 
             var dbEntityValidationException = ex as DbEntityValidationException;
-            if (dbEntityValidationException == null || dbEntityValidationException.EntityValidationErrors == null || !dbEntityValidationException.EntityValidationErrors.Any())
+            if (dbEntityValidationException?.EntityValidationErrors == null || !dbEntityValidationException.EntityValidationErrors.Any())
                 throw new Exception(exceptionMessage, ex);
 
             exceptionMessage += Environment.NewLine;
@@ -902,11 +1030,7 @@ namespace MD.Framework.Business
             foreach (var dbEntityValidationResult in dbEntityValidationResults)
             {
                 var entityName = dbEntityValidationResult.Entry.Entity.GetType().Name;
-                foreach (var validationError in dbEntityValidationResult.ValidationErrors)
-                {
-                    exceptionMessage += string.Format("{0}EntityValidationError: PropertyName='{1}' in '{2}', {3}",
-                        Environment.NewLine, validationError.PropertyName, entityName, validationError.ErrorMessage);
-                }
+                exceptionMessage = dbEntityValidationResult.ValidationErrors.Aggregate(exceptionMessage, (current, validationError) => current + $"{Environment.NewLine}EntityValidationError: PropertyName='{validationError.PropertyName}' in '{entityName}', {validationError.ErrorMessage}");
             }
 
             throw new Exception(exceptionMessage, ex);
