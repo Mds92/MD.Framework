@@ -15,7 +15,7 @@ namespace MD.Framework.Utility
 
         public ConditionTree()
         {
-            this.ChildrenConditions = new List<ConditionTree>();
+            ChildrenConditions = new List<ConditionTree>();
         }
 
 		[DataMember]
@@ -27,18 +27,18 @@ namespace MD.Framework.Utility
 		[DataMember]
 		public string SerializedValue { get; set; }
 
-        object _value;
+        private object _value;
 		public object Value {
 
             get
             {
-				return this._value;
+				return _value;
             }
             
 			set
             {
-	            this._value = value;
-				this.SerializedValue = JsonConvert.SerializeObject(_value, new JsonSerializerSettings
+                _value = value;
+                SerializedValue = JsonConvert.SerializeObject(_value, new JsonSerializerSettings
 				{
 					PreserveReferencesHandling = PreserveReferencesHandling.Objects
 				}).ToString(CultureInfo.InvariantCulture);

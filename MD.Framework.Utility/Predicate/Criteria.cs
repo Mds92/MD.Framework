@@ -81,17 +81,17 @@ namespace MD.Framework.Utility
 		public Criteria<TEntity> Or(Criteria<TEntity> critaria)
 		{
 			if (critaria == null) return this;
-			if (this._entityType != critaria._entityType)
-				throw new Exception(string.Format("critaria must be from '{0}' type", this._entityType.Assembly.FullName));
-			this.ConditionContainer.Tree.NextLogicalOperator = LogicalOperatorEnum.Or;
-			this.ConditionContainer.Tree.ChildrenConditions.Add(critaria.ConditionContainer.Tree);
+			if (_entityType != critaria._entityType)
+				throw new Exception($"critaria must be from '{_entityType.Assembly.FullName}' type");
+            ConditionContainer.Tree.NextLogicalOperator = LogicalOperatorEnum.Or;
+            ConditionContainer.Tree.ChildrenConditions.Add(critaria.ConditionContainer.Tree);
 			return this;
 		}
 
 		public Criteria<TEntity> Or(string selectorString, OperatorEnum operationType, object value)
 		{
 			if (string.IsNullOrWhiteSpace(selectorString))
-				throw new ArgumentException("Selector string can not be null or empty", "selectorString");
+				throw new ArgumentException("Selector string can not be null or empty", nameof(selectorString));
 
 			var targetPropertyType = GetTargetPropertyType(_entityType, selectorString);
 			if (targetPropertyType != value.GetType() && operationType != OperatorEnum.Contain && operationType != OperatorEnum.NotContain)
@@ -105,14 +105,14 @@ namespace MD.Framework.Utility
 				SelectorString = selectorString,
 				Id = GetNewGuid()
 			};
-			this.ConditionContainer.Tree.ChildrenConditions.Add(newConditionTree);
+            ConditionContainer.Tree.ChildrenConditions.Add(newConditionTree);
 			return this;
 		}
 
 		public Criteria<TEntity> Or<TProperty>(Expression<Func<TEntity, TProperty>> selectorExpression, OperatorEnum operationType, object value)
 		{
 			if (selectorExpression == null)
-				throw new ArgumentException("Selector string can not be null or empty", "selectorExpression");
+				throw new ArgumentException("Selector string can not be null or empty", nameof(selectorExpression));
 
 			var newConditionTree = new ConditionTree
 			{
@@ -122,7 +122,7 @@ namespace MD.Framework.Utility
 				SelectorString = GetSelectorStringFromExpression(selectorExpression),
 				Id = GetNewGuid()
 			};
-			this.ConditionContainer.Tree.ChildrenConditions.Add(newConditionTree);
+            ConditionContainer.Tree.ChildrenConditions.Add(newConditionTree);
 			return this;
 		}
 
@@ -133,17 +133,17 @@ namespace MD.Framework.Utility
 		public Criteria<TEntity> And(Criteria<TEntity> critaria)
 		{
 			if (critaria == null) return this;
-			if (this._entityType != critaria._entityType)
-				throw new Exception(string.Format("critaria must be from '{0}' type", this._entityType.Assembly.FullName));
-			this.ConditionContainer.Tree.NextLogicalOperator = LogicalOperatorEnum.And;
-			this.ConditionContainer.Tree.ChildrenConditions.Add(critaria.ConditionContainer.Tree);
+			if (_entityType != critaria._entityType)
+				throw new Exception($"critaria must be from '{_entityType.Assembly.FullName}' type");
+            ConditionContainer.Tree.NextLogicalOperator = LogicalOperatorEnum.And;
+            ConditionContainer.Tree.ChildrenConditions.Add(critaria.ConditionContainer.Tree);
 			return this;
 		}
 
 		public Criteria<TEntity> And<TProperty>(Expression<Func<TEntity, TProperty>> selectorExpression, OperatorEnum operationType, object value)
 		{
 			if (selectorExpression == null)
-				throw new ArgumentException("Selector string can not be null or empty", "selectorExpression");
+				throw new ArgumentException("Selector string can not be null or empty", nameof(selectorExpression));
 
 			var newConditionTree = new ConditionTree
 			{
@@ -153,14 +153,14 @@ namespace MD.Framework.Utility
 				SelectorString = GetSelectorStringFromExpression(selectorExpression),
 				Id = GetNewGuid()
 			};
-			this.ConditionContainer.Tree.ChildrenConditions.Add(newConditionTree);
+            ConditionContainer.Tree.ChildrenConditions.Add(newConditionTree);
 			return this;
 		}
 
 		public Criteria<TEntity> And(string selectorString, OperatorEnum operationType, object value)
 		{
 			if (string.IsNullOrWhiteSpace(selectorString))
-				throw new ArgumentException("Selector string can not be null or empty", "selectorString");
+				throw new ArgumentException("Selector string can not be null or empty", nameof(selectorString));
 
 			var targetPropertyType = GetTargetPropertyType(_entityType, selectorString);
 			if (value != null && targetPropertyType != value.GetType() && operationType != OperatorEnum.Contain && operationType != OperatorEnum.NotContain)
@@ -174,7 +174,7 @@ namespace MD.Framework.Utility
 				SelectorString = selectorString,
 				Id = GetNewGuid()
 			};
-			this.ConditionContainer.Tree.ChildrenConditions.Add(newConditionTree);
+            ConditionContainer.Tree.ChildrenConditions.Add(newConditionTree);
 			return this;
 		}
 
@@ -187,7 +187,7 @@ namespace MD.Framework.Utility
 			_checkedIds = new List<Guid>();
 			var entityType = typeof(TDestination);
 			var parameterExpression = Expression.Parameter(entityType, "entity");
-			var resultExpression = ConvertConditionToExpresion(this.ConditionContainer.Tree, entityType, parameterExpression);
+			var resultExpression = ConvertConditionToExpresion(ConditionContainer.Tree, entityType, parameterExpression);
 			return Expression.Lambda<Func<TDestination, bool>>(resultExpression, parameterExpression);
 		}
 
@@ -198,9 +198,9 @@ namespace MD.Framework.Utility
 				_entityType = typeof(TDestionation),
 				ConditionContainer = new Condition
 				{
-					EntityTypeName = this.ConditionContainer.EntityTypeName,
-					Id = this.ConditionContainer.Id,
-					Tree = CopyConditionTree(this.ConditionContainer.Tree)
+					EntityTypeName = ConditionContainer.EntityTypeName,
+					Id = ConditionContainer.Id,
+					Tree = CopyConditionTree(ConditionContainer.Tree)
 				}
 			};
 			return result;
@@ -239,7 +239,7 @@ namespace MD.Framework.Utility
 			_checkedIds = new List<Guid>();
 			var entityType = typeof(TEntity);
 			var parameterExpression = Expression.Parameter(entityType, "entity");
-			var resultExpression = ConvertConditionToExpresion(this.ConditionContainer.Tree, entityType, parameterExpression);
+			var resultExpression = ConvertConditionToExpresion(ConditionContainer.Tree, entityType, parameterExpression);
 			return Expression.Lambda<Func<TEntity, bool>>(resultExpression, parameterExpression);
 		}
 
@@ -255,7 +255,7 @@ namespace MD.Framework.Utility
 				_checkedIds.Add(childrenConditionTree.Id);
 
 				var logicalOperator = childrenConditionTree.ChildrenConditions.Any()
-					? this.ConditionContainer.Tree.NextLogicalOperator
+					? ConditionContainer.Tree.NextLogicalOperator
 					: childrenConditionTree.NextLogicalOperator;
 
 				switch (logicalOperator)
@@ -276,7 +276,7 @@ namespace MD.Framework.Utility
 		private static Expression GetConditionExpression(ConditionTree conditionForConvert, Type parameterExpressionType, ParameterExpression parameterExpression)
 		{
 			if (conditionForConvert == null)
-				throw new ArgumentNullException("conditionForConvert", "Condition tree is null");
+				throw new ArgumentNullException(nameof(conditionForConvert), "Condition tree is null");
 
 			Expression result;
 
@@ -544,7 +544,7 @@ namespace MD.Framework.Utility
 					break;
 
 				default:
-					throw new ArgumentException("Argument is not valid beacuse of operation type", "conditionForConvert");
+					throw new ArgumentException("Argument is not valid beacuse of operation type", nameof(conditionForConvert));
 			}
 
 			return result;
@@ -552,15 +552,15 @@ namespace MD.Framework.Utility
 
 		private static Expression GetLeftSide(string selectorString, Type parameterExpressionType, ParameterExpression parameterExpression)
 		{
-			if (string.IsNullOrWhiteSpace(selectorString)) throw new ArgumentNullException("selectorString", "Selector string is not valid");
+			if (string.IsNullOrWhiteSpace(selectorString)) throw new ArgumentNullException(nameof(selectorString), "Selector string is not valid");
 			var propertyParts = selectorString.Split(new[] { '.' });
 			if (propertyParts.Any(string.IsNullOrWhiteSpace))
-				throw new Exception(string.Format("Selector string \"{0}\" format is not valid.", selectorString));
+				throw new Exception($"Selector string \"{selectorString}\" format is not valid.");
 			var firstPartOfSelector = GetInvariantCultrueString(propertyParts[0]);
 
 			var propertyInThisType = parameterExpressionType.GetProperty(firstPartOfSelector);
 			if (propertyInThisType == null)
-				throw new Exception(string.Format("Selector string \"{0}\" is not exist in type \"{1}\".", selectorString, parameterExpressionType.Name));
+				throw new Exception($"Selector string \"{selectorString}\" is not exist in type \"{parameterExpressionType.Name}\".");
 
 			Expression expression = Expression.Property(parameterExpression, propertyInThisType);
 			if (propertyParts.Length == 1)
@@ -573,10 +573,10 @@ namespace MD.Framework.Utility
 			Expression resultExpression;
 			var inputExpressionType = inputExpression.Type;
 
-			if (string.IsNullOrWhiteSpace(selectorString)) throw new ArgumentNullException("selectorString", "Selector string is not valid");
+			if (string.IsNullOrWhiteSpace(selectorString)) throw new ArgumentNullException(nameof(selectorString), "Selector string is not valid");
 			var propertyParts = selectorString.Split(new[] { '.' });
 			if (propertyParts.Any(string.IsNullOrWhiteSpace))
-				throw new Exception(string.Format("Selector string \"{0}\" format is not valid.", selectorString));
+				throw new Exception($"Selector string \"{selectorString}\" format is not valid.");
 			var firstPartOfSelector = GetInvariantCultrueString(propertyParts[0]);
 
 			PropertyInfo selectedPropertyInfo = null;
@@ -594,7 +594,7 @@ namespace MD.Framework.Utility
 			}
 
 			if (selectedPropertyInfo == null && selectedMethodInfo == null)
-				throw new Exception(string.Format("Selector string \"{0}\" is not exist in type \"{1}\".", selectorString, inputExpression.Type.Name));
+				throw new Exception($"Selector string \"{selectorString}\" is not exist in type \"{inputExpression.Type.Name}\".");
 
 			if (propertyParts.Length != 1)
 				resultExpression = GetLeftSide(string.Join(".", propertyParts, 1, propertyParts.Length - 1), resultExpression);
@@ -633,7 +633,7 @@ namespace MD.Framework.Utility
 			else
 				selectedPropertyInfo = entityType.GetProperty(firstPartOfSelector);
 			if (selectedPropertyInfo == null && selectedMethodInfo == null)
-				throw new Exception(string.Format("Selector string \"{0}\" is not exist in type \"{1}\".", selectorString, entityType.Name));
+				throw new Exception($"Selector string \"{selectorString}\" is not exist in type \"{entityType.Name}\".");
 			if (propertyParts.Length != 1)
 				return GetTargetPropertyType(selectedPropertyInfo.PropertyType, string.Join(".", propertyParts, 1, propertyParts.Length - 1));
 			if (selectedPropertyInfo != null)

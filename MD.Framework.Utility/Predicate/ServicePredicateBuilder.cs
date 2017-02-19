@@ -96,10 +96,10 @@ namespace MD.Framework.Utility
 		{
 			var result = new ServicePredicateBuilder<TDestination>();
 
-			if (this.IncludedNavigationProperties != null && this.IncludedNavigationProperties.Count > 0)
+			if (IncludedNavigationProperties != null && IncludedNavigationProperties.Count > 0)
 			{
 				result.IncludedNavigationProperties = new List<string>();
-				foreach (var includedNavigationProperty in this.IncludedNavigationProperties)
+				foreach (var includedNavigationProperty in IncludedNavigationProperties)
 				{
 					var stringBuilder = new StringBuilder(includedNavigationProperty);
 					result.IncludedNavigationProperties.Add(stringBuilder.ToString());
@@ -110,14 +110,14 @@ namespace MD.Framework.Utility
 			{
 				result.PaginationData = new PaginationData
 				{
-					ItemsPerPage = this.PaginationData.ItemsPerPage,
-					PageNumber = this.PaginationData.PageNumber
+					ItemsPerPage = PaginationData.ItemsPerPage,
+					PageNumber = PaginationData.PageNumber
 				};
 			}
 
-			result.Criteria = this.Criteria.Cast<TDestination>();
-			if (this.SortCondition != null)
-				result.SortCondition = this.SortCondition.Cast<TDestination>();
+			result.Criteria = Criteria.Cast<TDestination>();
+			if (SortCondition != null)
+				result.SortCondition = SortCondition.Cast<TDestination>();
 
 			return result;
 		}

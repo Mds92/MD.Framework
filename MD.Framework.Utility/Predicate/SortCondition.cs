@@ -18,13 +18,12 @@ namespace MD.Framework.Utility
 
 		private SortCondition() { }
 
-		[DataMember]
-		List<SortItem> _sortItems = new List<SortItem>();
+		[DataMember] private List<SortItem> _sortItems = new List<SortItem>();
 
 		public static SortCondition<TEntity> OrderBy<TProperty>(Expression<Func<TEntity, TProperty>> selectorExpression)
 		{
 			if (selectorExpression == null)
-				throw new ArgumentException("Selector string can not be null or empty", "selectorExpression");
+				throw new ArgumentException("Selector string can not be null or empty", nameof(selectorExpression));
 
 			var result = new SortCondition<TEntity> { _entityType = typeof(TEntity) };
 			var item = new SortItem
@@ -39,7 +38,7 @@ namespace MD.Framework.Utility
 		public static SortCondition<TEntity> OrderBy(string propertySelector)
 		{
 			if (string.IsNullOrEmpty(propertySelector))
-				throw new ArgumentException("Selector string can not be null or empty", "propertySelector");
+				throw new ArgumentException("Selector string can not be null or empty", nameof(propertySelector));
 
 			var result = new SortCondition<TEntity> { _entityType = typeof(TEntity) };
 			var item = new SortItem
@@ -54,7 +53,7 @@ namespace MD.Framework.Utility
 		public static SortCondition<TEntity> OrderByDescending<TProperty>(Expression<Func<TEntity, TProperty>> selectorExpression)
 		{
 			if (selectorExpression == null)
-				throw new ArgumentException("Selector string can not be null or empty", "selectorExpression");
+				throw new ArgumentException("Selector string can not be null or empty", nameof(selectorExpression));
 
 			var result = new SortCondition<TEntity> { _entityType = typeof(TEntity) };
 			var item = new SortItem
@@ -69,7 +68,7 @@ namespace MD.Framework.Utility
 		public static SortCondition<TEntity> OrderByDescending(string propertySelector)
 		{
 			if (string.IsNullOrEmpty(propertySelector))
-				throw new ArgumentException("Selector string can not be null or empty", "propertySelector");
+				throw new ArgumentException("Selector string can not be null or empty", nameof(propertySelector));
 
 			var result = new SortCondition<TEntity> { _entityType = typeof(TEntity) };
 			var item = new SortItem
@@ -84,52 +83,52 @@ namespace MD.Framework.Utility
 		public SortCondition<TEntity> ThenBy<TProperty>(Expression<Func<TEntity, TProperty>> selectorExpression)
 		{
 			if (selectorExpression == null)
-				throw new ArgumentException("Selector string can not be null or empty", "selectorExpression");
+				throw new ArgumentException("Selector string can not be null or empty", nameof(selectorExpression));
 			var item = new SortItem
 			{
 				PropertySelector = GetSelectorStringFromExpression(selectorExpression),
 				SortDirection = SortDirection.Ascending
 			};
-			this._sortItems.Add(item);
+            _sortItems.Add(item);
 			return this;
 		}
 
 		public SortCondition<TEntity> ThenBy(string propertySelector)
 		{
 			if (string.IsNullOrEmpty(propertySelector))
-				throw new ArgumentException("Selector string can not be null or empty", "propertySelector");
+				throw new ArgumentException("Selector string can not be null or empty", nameof(propertySelector));
 			var item = new SortItem
 			{
 				PropertySelector = propertySelector,
 				SortDirection = SortDirection.Ascending
 			};
-			this._sortItems.Add(item);
+            _sortItems.Add(item);
 			return this;
 		}
 
 		public SortCondition<TEntity> ThenByDescending<TProperty>(Expression<Func<TEntity, TProperty>> selectorExpression)
 		{
 			if (selectorExpression == null)
-				throw new ArgumentException("Selector string can not be null or empty", "selectorExpression");
+				throw new ArgumentException("Selector string can not be null or empty", nameof(selectorExpression));
 			var item = new SortItem
 			{
 				PropertySelector = GetSelectorStringFromExpression(selectorExpression),
 				SortDirection = SortDirection.Descending
 			};
-			this._sortItems.Add(item);
+            _sortItems.Add(item);
 			return this;
 		}
 
 		public SortCondition<TEntity> ThenByDescending(string propertySelector)
 		{
 			if (string.IsNullOrEmpty(propertySelector))
-				throw new ArgumentException("Selector string can not be null or empty", "propertySelector");
+				throw new ArgumentException("Selector string can not be null or empty", nameof(propertySelector));
 			var item = new SortItem
 			{
 				PropertySelector = propertySelector,
 				SortDirection = SortDirection.Descending
 			};
-			this._sortItems.Add(item);
+            _sortItems.Add(item);
 			return this;
 		}
 
@@ -138,10 +137,10 @@ namespace MD.Framework.Utility
 			var result = new SortCondition<TDestionation>
 			{
 				_entityType = typeof(TDestionation),
-				_parameterExpression = this._parameterExpression,
-				_orderableParameterExpression = this._orderableParameterExpression
-			};
-			foreach (var sortItem in this._sortItems)
+				_parameterExpression = _parameterExpression,
+				_orderableParameterExpression = _orderableParameterExpression
+            };
+			foreach (var sortItem in _sortItems)
 			{
 				var newSortItem = new SortItem()
 				{
@@ -224,15 +223,15 @@ namespace MD.Framework.Utility
 
 		private static MemberExpression GetSortMemberExpression(string selectorString, Type parameterExpressionType, ParameterExpression parameterExpression)
 		{
-			if (string.IsNullOrWhiteSpace(selectorString)) throw new ArgumentNullException("selectorString", "Selector string is not valid");
+			if (string.IsNullOrWhiteSpace(selectorString)) throw new ArgumentNullException(nameof(selectorString), "Selector string is not valid");
 			var propertyParts = selectorString.Split('.');
 			if (propertyParts.Any(string.IsNullOrWhiteSpace))
-				throw new Exception(string.Format("Selector string \"{0}\" format is not valid.", selectorString));
+				throw new Exception($"Selector string \"{selectorString}\" format is not valid.");
 			var firstPartOfSelector = propertyParts[0].ToString(CultureInfo.InvariantCulture);
 
 			var propertyInThisType = parameterExpressionType.GetProperty(firstPartOfSelector);
 			if (propertyInThisType == null)
-				throw new Exception(string.Format("Selector string \"{0}\" is not exist in type \"{1}\".", selectorString, parameterExpressionType.Name));
+				throw new Exception($"Selector string \"{selectorString}\" is not exist in type \"{parameterExpressionType.Name}\".");
 
 			var me = Expression.Property(parameterExpression, propertyInThisType);
 			if (propertyParts.Length == 1)
@@ -244,15 +243,15 @@ namespace MD.Framework.Utility
 		private static MemberExpression GetSortMemberExpression(string selectorString, MemberExpression memberExpression)
 		{
 			MemberExpression result;
-			if (string.IsNullOrWhiteSpace(selectorString)) throw new ArgumentNullException("selectorString", "Selector string is not valid");
+			if (string.IsNullOrWhiteSpace(selectorString)) throw new ArgumentNullException(nameof(selectorString), "Selector string is not valid");
 			var propertyParts = selectorString.Split('.');
 			if (propertyParts.Any(string.IsNullOrWhiteSpace))
-				throw new Exception(string.Format("Selector string \"{0}\" format is not valid.", selectorString));
+				throw new Exception($"Selector string \"{selectorString}\" format is not valid.");
 			var firstPartOfSelector = propertyParts[0].ToString(CultureInfo.InvariantCulture);
 
 			var propertyInThisType = memberExpression.Type.GetProperty(firstPartOfSelector);
 			if (propertyInThisType == null)
-				throw new Exception(string.Format("Selector string \"{0}\" is not exist in type \"{1}\".", selectorString, memberExpression.Type.Name));
+				throw new Exception($"Selector string \"{selectorString}\" is not exist in type \"{memberExpression.Type.Name}\".");
 
 			var me = Expression.Property(memberExpression, propertyInThisType);
 

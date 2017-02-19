@@ -11,7 +11,7 @@ namespace MD.Framework.Business
 		private const string FullTextPrefix = "-FullTextSearchInterceptor-";
 		public static string FullTextSearch(string search)
 		{
-			return string.Format("({0}{1})", FullTextPrefix, search);
+			return $"({FullTextPrefix}{search})";
 		}
 		public void NonQueryExecuting(DbCommand command, DbCommandInterceptionContext<int> interceptionContext)
 		{
@@ -51,9 +51,8 @@ namespace MD.Framework.Business
 				value = value.Substring(1, value.Length - 2); // remove %% escaping by linq translator from string.Contains to sql LIKE
 				parameter.Value = value;
 				cmd.CommandText = Regex.Replace(text,
-					string.Format(
-						@"\[(\w*)\].\[(\w*)\]\s*LIKE\s*@{0}\s?(?:ESCAPE N?'~')", parameter.ParameterName),
-					string.Format(@"contains([$1].[$2], @{0})", parameter.ParameterName));
+				    $@"\[(\w*)\].\[(\w*)\]\s*LIKE\s*@{parameter.ParameterName}\s?(?:ESCAPE N?'~')",
+				    $@"contains([$1].[$2], @{parameter.ParameterName})");
 				if (text == cmd.CommandText)
 					throw new Exception("Full Text Search was not replaced on: " + text);
 				text = cmd.CommandText;
