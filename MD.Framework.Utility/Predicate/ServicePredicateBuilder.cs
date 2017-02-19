@@ -38,9 +38,9 @@ namespace MD.Framework.Utility
 				{
 					if (IncludedNavigationProperties == null)
 						IncludedNavigationProperties = new List<string>();
-					foreach (Expression<Func<TEntity, object>> expression in value)
+					foreach (var expression in value)
 					{
-						string selectorString = expression.Body.ToString();
+						var selectorString = expression.Body.ToString();
 						IncludedNavigationProperties.Add(selectorString.Remove(0, selectorString.IndexOf('.') + 1));
 					}
 				}
@@ -56,7 +56,7 @@ namespace MD.Framework.Utility
 			if (IncludedNavigationProperties == null)
 				IncludedNavigationProperties = new List<string>();
 
-			string selectorString = expression.Body.ToString();
+			var selectorString = expression.Body.ToString();
 			IncludedNavigationProperties.Add(selectorString.Remove(0, selectorString.IndexOf('.') + 1));
 		}
 
@@ -69,9 +69,9 @@ namespace MD.Framework.Utility
 
 			if (IncludedNavigationProperties == null)
 				IncludedNavigationProperties = new List<string>();
-			foreach (Expression<Func<TEntity, object>> expression in expressions)
+			foreach (var expression in expressions)
 			{
-				string selectorString = expression.Body.ToString();
+				var selectorString = expression.Body.ToString();
 				IncludedNavigationProperties.Add(selectorString.Remove(0, selectorString.IndexOf('.') + 1));
 			}
 		}
@@ -84,7 +84,7 @@ namespace MD.Framework.Utility
 			}
 			if (IncludedNavigationProperties != null && IncludedNavigationProperties.Any())
 			{
-				string selectorString = expression.Body.ToString();
+				var selectorString = expression.Body.ToString();
 				IncludedNavigationProperties.Remove(selectorString.Remove(0, selectorString.IndexOf('.') + 1));
 			}
 		}
@@ -94,14 +94,14 @@ namespace MD.Framework.Utility
 
 		public ServicePredicateBuilder<TDestination> Cast<TDestination>() where TDestination : class
 		{
-			ServicePredicateBuilder<TDestination> result = new ServicePredicateBuilder<TDestination>();
+			var result = new ServicePredicateBuilder<TDestination>();
 
 			if (this.IncludedNavigationProperties != null && this.IncludedNavigationProperties.Count > 0)
 			{
 				result.IncludedNavigationProperties = new List<string>();
-				foreach (string includedNavigationProperty in this.IncludedNavigationProperties)
+				foreach (var includedNavigationProperty in this.IncludedNavigationProperties)
 				{
-					StringBuilder stringBuilder = new StringBuilder(includedNavigationProperty);
+					var stringBuilder = new StringBuilder(includedNavigationProperty);
 					result.IncludedNavigationProperties.Add(stringBuilder.ToString());
 				}
 			}

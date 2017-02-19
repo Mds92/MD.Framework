@@ -31,8 +31,8 @@ namespace MD.Framework.Utility
 
 		public static Criteria<TEntity> True()
 		{
-			Type entityType = typeof(TEntity);
-			Criteria<TEntity> critaria = new Criteria<TEntity>
+			var entityType = typeof(TEntity);
+			var critaria = new Criteria<TEntity>
 			{
 				ConditionContainer = new Condition
 				{
@@ -53,8 +53,8 @@ namespace MD.Framework.Utility
 
 		public static Criteria<TEntity> False()
 		{
-			Type entityType = typeof(TEntity);
-			Criteria<TEntity> critaria = new Criteria<TEntity>
+			var entityType = typeof(TEntity);
+			var critaria = new Criteria<TEntity>
 			{
 				ConditionContainer = new Condition
 				{
@@ -93,11 +93,11 @@ namespace MD.Framework.Utility
 			if (string.IsNullOrWhiteSpace(selectorString))
 				throw new ArgumentException("Selector string can not be null or empty", "selectorString");
 
-			Type targetPropertyType = GetTargetPropertyType(_entityType, selectorString);
+			var targetPropertyType = GetTargetPropertyType(_entityType, selectorString);
 			if (targetPropertyType != value.GetType() && operationType != OperatorEnum.Contain && operationType != OperatorEnum.NotContain)
 				value = ChangeValueType(targetPropertyType, value);
 
-			ConditionTree newConditionTree = new ConditionTree
+			var newConditionTree = new ConditionTree
 			{
 				OperationType = operationType,
 				Value = value,
@@ -114,7 +114,7 @@ namespace MD.Framework.Utility
 			if (selectorExpression == null)
 				throw new ArgumentException("Selector string can not be null or empty", "selectorExpression");
 
-			ConditionTree newConditionTree = new ConditionTree
+			var newConditionTree = new ConditionTree
 			{
 				OperationType = operationType,
 				Value = value,
@@ -145,7 +145,7 @@ namespace MD.Framework.Utility
 			if (selectorExpression == null)
 				throw new ArgumentException("Selector string can not be null or empty", "selectorExpression");
 
-			ConditionTree newConditionTree = new ConditionTree
+			var newConditionTree = new ConditionTree
 			{
 				OperationType = operationType,
 				Value = value,
@@ -162,11 +162,11 @@ namespace MD.Framework.Utility
 			if (string.IsNullOrWhiteSpace(selectorString))
 				throw new ArgumentException("Selector string can not be null or empty", "selectorString");
 
-			Type targetPropertyType = GetTargetPropertyType(_entityType, selectorString);
+			var targetPropertyType = GetTargetPropertyType(_entityType, selectorString);
 			if (value != null && targetPropertyType != value.GetType() && operationType != OperatorEnum.Contain && operationType != OperatorEnum.NotContain)
 				value = ChangeValueType(targetPropertyType, value);
 
-			ConditionTree newConditionTree = new ConditionTree
+			var newConditionTree = new ConditionTree
 			{
 				OperationType = operationType,
 				Value = value,
@@ -185,15 +185,15 @@ namespace MD.Framework.Utility
 		public Expression<Func<TDestination, bool>> TypedGetExpression<TDestination>() where TDestination : class
 		{
 			_checkedIds = new List<Guid>();
-			Type entityType = typeof(TDestination);
-			ParameterExpression parameterExpression = Expression.Parameter(entityType, "entity");
-			Expression resultExpression = ConvertConditionToExpresion(this.ConditionContainer.Tree, entityType, parameterExpression);
+			var entityType = typeof(TDestination);
+			var parameterExpression = Expression.Parameter(entityType, "entity");
+			var resultExpression = ConvertConditionToExpresion(this.ConditionContainer.Tree, entityType, parameterExpression);
 			return Expression.Lambda<Func<TDestination, bool>>(resultExpression, parameterExpression);
 		}
 
 		public Criteria<TDestionation> Cast<TDestionation>() where TDestionation : class
 		{
-			Criteria<TDestionation> result = new Criteria<TDestionation>
+			var result = new Criteria<TDestionation>
 			{
 				_entityType = typeof(TDestionation),
 				ConditionContainer = new Condition
@@ -209,7 +209,7 @@ namespace MD.Framework.Utility
 		private static ConditionTree CopyConditionTree(ConditionTree sourceConditionTree)
 		{
 			if (sourceConditionTree == null) return null;
-			ConditionTree result = new ConditionTree
+			var result = new ConditionTree
 			{
 				Id = sourceConditionTree.Id,
 				NextLogicalOperator = sourceConditionTree.NextLogicalOperator,
@@ -224,7 +224,7 @@ namespace MD.Framework.Utility
 				result.ChildrenConditions = new List<ConditionTree>();
 				foreach (var childrenCondition in sourceConditionTree.ChildrenConditions)
 				{
-					ConditionTree clonedObject = CopyConditionTree(childrenCondition);
+					var clonedObject = CopyConditionTree(childrenCondition);
 					if (clonedObject != null)
 					{
 						result.ChildrenConditions.Add(clonedObject);
@@ -237,9 +237,9 @@ namespace MD.Framework.Utility
 		public Expression<Func<TEntity, bool>> GetExpression()
 		{
 			_checkedIds = new List<Guid>();
-			Type entityType = typeof(TEntity);
-			ParameterExpression parameterExpression = Expression.Parameter(entityType, "entity");
-			Expression resultExpression = ConvertConditionToExpresion(this.ConditionContainer.Tree, entityType, parameterExpression);
+			var entityType = typeof(TEntity);
+			var parameterExpression = Expression.Parameter(entityType, "entity");
+			var resultExpression = ConvertConditionToExpresion(this.ConditionContainer.Tree, entityType, parameterExpression);
 			return Expression.Lambda<Func<TEntity, bool>>(resultExpression, parameterExpression);
 		}
 
@@ -247,9 +247,9 @@ namespace MD.Framework.Utility
 
 		private Expression ConvertConditionToExpresion(ConditionTree conditionTree, Type parameterExpressionType, ParameterExpression parameterExpression)
 		{
-			Expression resultExpression = GetConditionExpression(conditionTree, parameterExpressionType, parameterExpression);
+			var resultExpression = GetConditionExpression(conditionTree, parameterExpressionType, parameterExpression);
 
-			foreach (ConditionTree childrenConditionTree in conditionTree.ChildrenConditions)
+			foreach (var childrenConditionTree in conditionTree.ChildrenConditions)
 			{
 				if (_checkedIds.Contains(childrenConditionTree.Id)) continue;
 				_checkedIds.Add(childrenConditionTree.Id);
@@ -286,8 +286,8 @@ namespace MD.Framework.Utility
 			if (conditionForConvert.OperationType == OperatorEnum.None
 				&& string.Equals(conditionForConvert.SerializedValue, ((int)TrueFalseEnum.True).ToString(CultureInfo.InvariantCulture), StringComparison.InvariantCultureIgnoreCase))
 			{
-				ConstantExpression constantExpression = Expression.Constant(1, typeof(int));
-				BinaryExpression binaryExpression = Expression.Equal(constantExpression, constantExpression);
+				var constantExpression = Expression.Constant(1, typeof(int));
+				var binaryExpression = Expression.Equal(constantExpression, constantExpression);
 				return binaryExpression;
 
 			}
@@ -295,8 +295,8 @@ namespace MD.Framework.Utility
 			if (conditionForConvert.OperationType == OperatorEnum.None
 				&& string.Equals(conditionForConvert.SerializedValue, ((int)TrueFalseEnum.False).ToString(CultureInfo.InvariantCulture), StringComparison.InvariantCultureIgnoreCase))
 			{
-				ConstantExpression constantExpression = Expression.Constant(1, typeof(int));
-				BinaryExpression binaryExpression = Expression.NotEqual(constantExpression, constantExpression);
+				var constantExpression = Expression.Constant(1, typeof(int));
+				var binaryExpression = Expression.NotEqual(constantExpression, constantExpression);
 				return binaryExpression;
 			}
 
@@ -307,9 +307,9 @@ namespace MD.Framework.Utility
 			Expression collection = null;
 
 			// نوع پروپرتی اصلی در دیتابیس
-			Type leftSidePropertyType = GetTargetPropertyType(parameterExpressionType, conditionForConvert.SelectorString);
-			bool isNumericType = leftSidePropertyType.IsNumericType();
-			bool isString = leftSidePropertyType == StringType;
+			var leftSidePropertyType = GetTargetPropertyType(parameterExpressionType, conditionForConvert.SelectorString);
+			var isNumericType = leftSidePropertyType.IsNumericType();
+			var isString = leftSidePropertyType == StringType;
 
 			MethodInfo trimMethodInfo = null;
 			MethodInfo trimStartMethodInfo = null;
@@ -319,14 +319,14 @@ namespace MD.Framework.Utility
 			MethodInfo containsMethodInfo = null;
 			MethodInfo stringCompareMethodInfo = null;
 			Expression argumantsExpression = null;
-			Expression leftSile = GetLeftSide(conditionForConvert.SelectorString, parameterExpressionType, parameterExpression);
+			var leftSile = GetLeftSide(conditionForConvert.SelectorString, parameterExpressionType, parameterExpression);
 
 			switch (conditionForConvert.OperationType)
 			{
 				case OperatorEnum.Contain:
 				case OperatorEnum.NotContain:
-					Type listType = typeof(ICollection<>);
-					Type numbericGenericType = listType.MakeGenericType(leftSidePropertyType);
+					var listType = typeof(ICollection<>);
+					var numbericGenericType = listType.MakeGenericType(leftSidePropertyType);
 					valueObject = JsonConvert.DeserializeObject(!string.IsNullOrEmpty(conditionForConvert.SerializedValue) ? conditionForConvert.SerializedValue : null, numbericGenericType);
 					containsMethodInfo = numbericGenericType.GetMethod("Contains", new[] { leftSidePropertyType });
 					collection = Expression.Constant(valueObject);
@@ -388,7 +388,7 @@ namespace MD.Framework.Utility
 
 			UnaryExpression unaryExpression = null;
 			ConstantExpression convertedRightSideConstantExpression = null;
-			Type nullableDoubleType = typeof(double?);
+			var nullableDoubleType = typeof(double?);
 			MethodInfo stringConvertMethodInfo = null;
 
 			if (isNumericType)
@@ -421,8 +421,8 @@ namespace MD.Framework.Utility
 				case OperatorEnum.Like:
 					if (isNumericType)
 					{
-						MethodCallExpression methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
-						MethodCallExpression methodCallExpression2 = Expression.Call(methodCallExpression1, trimMethodInfo);
+						var methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
+						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimMethodInfo);
 						result = Expression.Call(methodCallExpression2, containsMethodInfo, convertedRightSideConstantExpression);
 					}
 					else
@@ -434,8 +434,8 @@ namespace MD.Framework.Utility
 				case OperatorEnum.NotLike:
 					if (isNumericType)
 					{
-						MethodCallExpression methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
-						MethodCallExpression methodCallExpression2 = Expression.Call(methodCallExpression1, trimMethodInfo);
+						var methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
+						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimMethodInfo);
 						result = Expression.Call(methodCallExpression2, containsMethodInfo, convertedRightSideConstantExpression);
 						result = Expression.Not(result);
 					}
@@ -448,8 +448,8 @@ namespace MD.Framework.Utility
 				case OperatorEnum.StartsWith:
 					if (isNumericType)
 					{
-						MethodCallExpression methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
-						MethodCallExpression methodCallExpression2 = Expression.Call(methodCallExpression1, trimStartMethodInfo, argumantsExpression);
+						var methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
+						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimStartMethodInfo, argumantsExpression);
 						result = Expression.Call(methodCallExpression2, startsWithMethodInfo, convertedRightSideConstantExpression);
 					}
 					else
@@ -461,8 +461,8 @@ namespace MD.Framework.Utility
 				case OperatorEnum.NotStartsWith:
 					if (isNumericType)
 					{
-						MethodCallExpression methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
-						MethodCallExpression methodCallExpression2 = Expression.Call(methodCallExpression1, trimStartMethodInfo, argumantsExpression);
+						var methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
+						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimStartMethodInfo, argumantsExpression);
 						result = Expression.Call(methodCallExpression2, startsWithMethodInfo, convertedRightSideConstantExpression);
 						result = Expression.Not(result);
 					}
@@ -475,8 +475,8 @@ namespace MD.Framework.Utility
 				case OperatorEnum.EndsWith:
 					if (isNumericType)
 					{
-						MethodCallExpression methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
-						MethodCallExpression methodCallExpression2 = Expression.Call(methodCallExpression1, trimEndMethodInfo, argumantsExpression);
+						var methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
+						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimEndMethodInfo, argumantsExpression);
 						result = Expression.Call(methodCallExpression2, endsWithMethodInfo, convertedRightSideConstantExpression);
 					}
 					else
@@ -488,8 +488,8 @@ namespace MD.Framework.Utility
 				case OperatorEnum.NotEndsWith:
 					if (isNumericType)
 					{
-						MethodCallExpression methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
-						MethodCallExpression methodCallExpression2 = Expression.Call(methodCallExpression1, trimEndMethodInfo, argumantsExpression);
+						var methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
+						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimEndMethodInfo, argumantsExpression);
 						result = Expression.Call(methodCallExpression2, endsWithMethodInfo, convertedRightSideConstantExpression);
 						result = Expression.Not(result);
 					}
@@ -553,12 +553,12 @@ namespace MD.Framework.Utility
 		private static Expression GetLeftSide(string selectorString, Type parameterExpressionType, ParameterExpression parameterExpression)
 		{
 			if (string.IsNullOrWhiteSpace(selectorString)) throw new ArgumentNullException("selectorString", "Selector string is not valid");
-			string[] propertyParts = selectorString.Split(new[] { '.' });
+			var propertyParts = selectorString.Split(new[] { '.' });
 			if (propertyParts.Any(string.IsNullOrWhiteSpace))
 				throw new Exception(string.Format("Selector string \"{0}\" format is not valid.", selectorString));
-			string firstPartOfSelector = GetInvariantCultrueString(propertyParts[0]);
+			var firstPartOfSelector = GetInvariantCultrueString(propertyParts[0]);
 
-			PropertyInfo propertyInThisType = parameterExpressionType.GetProperty(firstPartOfSelector);
+			var propertyInThisType = parameterExpressionType.GetProperty(firstPartOfSelector);
 			if (propertyInThisType == null)
 				throw new Exception(string.Format("Selector string \"{0}\" is not exist in type \"{1}\".", selectorString, parameterExpressionType.Name));
 
@@ -571,19 +571,19 @@ namespace MD.Framework.Utility
 		private static Expression GetLeftSide(string selectorString, Expression inputExpression)
 		{
 			Expression resultExpression;
-			Type inputExpressionType = inputExpression.Type;
+			var inputExpressionType = inputExpression.Type;
 
 			if (string.IsNullOrWhiteSpace(selectorString)) throw new ArgumentNullException("selectorString", "Selector string is not valid");
-			string[] propertyParts = selectorString.Split(new[] { '.' });
+			var propertyParts = selectorString.Split(new[] { '.' });
 			if (propertyParts.Any(string.IsNullOrWhiteSpace))
 				throw new Exception(string.Format("Selector string \"{0}\" format is not valid.", selectorString));
-			string firstPartOfSelector = GetInvariantCultrueString(propertyParts[0]);
+			var firstPartOfSelector = GetInvariantCultrueString(propertyParts[0]);
 
 			PropertyInfo selectedPropertyInfo = null;
 			MethodInfo selectedMethodInfo = null;
 			if (firstPartOfSelector.IndexOf('(') > 0)
 			{
-				string methodName = firstPartOfSelector.Remove(firstPartOfSelector.IndexOf('('));
+				var methodName = firstPartOfSelector.Remove(firstPartOfSelector.IndexOf('('));
 				selectedMethodInfo = inputExpressionType.GetMethod(methodName, new Type[0]);
 				resultExpression = Expression.Call(inputExpression, selectedMethodInfo);
 			}
@@ -611,23 +611,23 @@ namespace MD.Framework.Utility
 
 		private static string GetSelectorStringFromExpression<TProperty>(Expression<Func<TEntity, TProperty>> selectorExpression)
 		{
-			string selectorString = selectorExpression.Body.ToString();
+			var selectorString = selectorExpression.Body.ToString();
 			return selectorString.Remove(0, selectorString.IndexOf('.') + 1);
 		}
 
 		private static Type GetTargetPropertyType(Type entityType, string selectorString)
 		{
 			if (string.IsNullOrWhiteSpace(selectorString)) return null;
-			string[] propertyParts = selectorString.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries)
+			var propertyParts = selectorString.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries)
 				.Select(q => q.Trim())
 				.Where(q => !string.IsNullOrEmpty(q))
 				.ToArray();
-			string firstPartOfSelector = propertyParts[0].ToString(CultureInfo.InvariantCulture);
+			var firstPartOfSelector = propertyParts[0].ToString(CultureInfo.InvariantCulture);
 			PropertyInfo selectedPropertyInfo = null;
 			MethodInfo selectedMethodInfo = null;
 			if (firstPartOfSelector.IndexOf('(') > 0)
 			{
-				string methodName = firstPartOfSelector.Remove(firstPartOfSelector.IndexOf('('));
+				var methodName = firstPartOfSelector.Remove(firstPartOfSelector.IndexOf('('));
 				selectedMethodInfo = entityType.GetMethod(methodName, new Type[0]);
 			}
 			else
@@ -643,7 +643,7 @@ namespace MD.Framework.Utility
 
 		private static object ChangeValueType(Type targetPropertyType, object value)
 		{
-			string propertyValueInString = value.ToString().ToEnglishNumber();
+			var propertyValueInString = value.ToString().ToEnglishNumber();
 
 			// Changing type
 
@@ -660,12 +660,12 @@ namespace MD.Framework.Utility
 				propertyValueInString = Regex.Replace(propertyValueInString, @"[^\d\.]+|\.+$|^\.+", "");
 				try
 				{
-					TypeConverter typeConverter = TypeDescriptor.GetConverter(targetPropertyType);
+					var typeConverter = TypeDescriptor.GetConverter(targetPropertyType);
 					propertyValue = typeConverter.ConvertFrom(propertyValueInString);
 				}
 				catch
 				{
-					FieldInfo fieldInfo = targetPropertyType.GetField("MinValue");
+					var fieldInfo = targetPropertyType.GetField("MinValue");
 					propertyValue = fieldInfo.GetRawConstantValue();
 				}
 			}
@@ -673,7 +673,7 @@ namespace MD.Framework.Utility
 			{
 				try
 				{
-					TypeConverter typeConverter = TypeDescriptor.GetConverter(targetPropertyType);
+					var typeConverter = TypeDescriptor.GetConverter(targetPropertyType);
 					propertyValue = typeConverter.ConvertFrom(propertyValueInString.Trim());
 				}
 				catch
