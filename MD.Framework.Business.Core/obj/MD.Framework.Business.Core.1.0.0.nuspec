@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>MD.Framework.Business.Core</id>
+    <version>1.0.0</version>
+    <authors>Mohammad Dayyan</authors>
+    <owners>Mohammad Dayyan</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://choosealicense.com/licenses/apache-2.0/</licenseUrl>
+    <projectUrl>https://github.com/Mds92/MD.Framework</projectUrl>
+    <description>A framework to work with EntityFramework</description>
+    <copyright>Mohammad Dayyan 2017</copyright>
+    <tags>c# .netcore framework entityframework</tags>
+    <repository url="https://github.com/Mds92/MD.Framework" />
+    <dependencies>
+      <group targetFramework=".NETCoreApp1.0">
+        <dependency id="Microsoft.NETCore.App" version="1.1.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="1.1.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="D:\Works\MD.Framework\MD.Framework.Business.Core\bin\Release\netcoreapp1.0\MD.Framework.Business.Core.dll" target="lib\netcoreapp1.0\MD.Framework.Business.Core.dll" />
+  </files>
+</package>

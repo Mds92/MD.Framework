@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <Authors>Mohammad Dayyan</Authors>
+    <Company>Mohammad Dayyan</Company>
+    <Product>Mohammad Dayyan</Product>
+    <Description>A framework to work with EntityFramework</Description>
+    <Copyright>Mohammad Dayyan 2017</Copyright>
+    <PackageProjectUrl>https://github.com/Mds92/MD.Framework</PackageProjectUrl>
+    <PackageLicenseUrl>https://choosealicense.com/licenses/apache-2.0/</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/Mds92/MD.Framework</RepositoryUrl>
+    <PackageTags>c# .netcore framework entityframework</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.0" />
+  </ItemGroup>
+
+</Project>
