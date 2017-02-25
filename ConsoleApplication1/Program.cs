@@ -23,8 +23,7 @@ namespace ConsoleApplication1
 
 		void Sort()
 		{
-			var test = SortCondition<MyClass>.OrderBy(q => q.Prop1).ThenBy(q => q.Prop2);
+			
 		}
-
 	}
 }
