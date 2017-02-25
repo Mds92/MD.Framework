@@ -13,6 +13,7 @@
     <PackageTags>c# .netcore framework entityframework</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

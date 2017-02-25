@@ -846,6 +846,19 @@ namespace MD.Framework.Business
             }
         }
 
+        public TEntity UpdateWithSaveChanges(TEntity entity)
+        {
+            return UpdateWithSaveChanges(new List<TEntity> { entity }).First();
+        }
+
+        public List<TEntity> UpdateWithSaveChanges(List<TEntity> entities)
+        {
+            foreach (var entity in entities)
+                BeforeUpdate(entity);
+            SaveChanges(entities);
+            return entities;
+        }
+
         [DataObjectMethod(DataObjectMethodType.Update)]
         public TEntity Update(TEntity entity)
         {
@@ -856,8 +869,23 @@ namespace MD.Framework.Business
         public List<TEntity> Update(List<TEntity> entities)
         {
             foreach (var entity in entities)
+            {
                 BeforeUpdate(entity);
-            SaveChanges(entities);
+                Context.Entry(entity).State = EntityState.Modified;
+            }
+            return entities;
+        }
+
+        public TEntity ChangeState(TEntity entity, EntityState entityState)
+        {
+            Context.Entry(entity).State = entityState;
+            return entity;
+        }
+
+        public List<TEntity> ChangeState(List<TEntity> entities, EntityState entityState)
+        {
+            foreach (var entity in entities)
+                Context.Entry(entity).State = EntityState.Modified;
             return entities;
         }
 
@@ -868,16 +896,14 @@ namespace MD.Framework.Business
             return Context.SaveChangesAsync();
         }
 
-        [DataObjectMethod(DataObjectMethodType.Update)]
-        public Task<TEntity> UpdateAsync(TEntity entity)
+        public Task<TEntity> UpdateWithSaveChangesAsync(TEntity entity)
         {
-            return Task.Run(() => Update(entity));
+            return Task.Run(() => UpdateWithSaveChanges(entity));
         }
 
-        [DataObjectMethod(DataObjectMethodType.Update)]
-        public Task<List<TEntity>> UpdateAsync(List<TEntity> entities)
+        public Task<List<TEntity>> UpdateWithSaveChangesAsync(List<TEntity> entities)
         {
-            return Task.Run(() => Update(entities));
+            return Task.Run(() => UpdateWithSaveChanges(entities));
         }
 
         #endregion
