@@ -121,5 +121,55 @@ namespace MD.Framework.Utility
 
 			return result;
 		}
-	}
+
+        #region Cast To ExpressionInfo
+
+        public static implicit operator ExpressionInfo<TEntity>(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
+        {
+            return GetExpressionInfoFromPredicateBuilder(servicePredicateBuilder);
+        }
+
+        private static ExpressionInfo<TEntity> GetExpressionInfoFromPredicateBuilder(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
+        {
+            if (servicePredicateBuilder == null)
+            {
+                return null;
+            }
+            var result = new ExpressionInfo<TEntity>();
+            if (servicePredicateBuilder.Criteria != null)
+            {
+                result.Expression = servicePredicateBuilder.Criteria.GetExpression();
+            }
+            if (servicePredicateBuilder.PaginationData != null)
+            {
+                result.PaginationData = new PaginationData
+                {
+                    ItemsPerPage = servicePredicateBuilder.PaginationData.ItemsPerPage,
+                    PageNumber = servicePredicateBuilder.PaginationData.PageNumber
+                };
+            }
+
+            if (servicePredicateBuilder.IncludedNavigationProperties != null && servicePredicateBuilder.IncludedNavigationProperties.Any())
+            {
+                result.IncludedNavigationProperties = new List<string>();
+                foreach (var navigation in servicePredicateBuilder.IncludedNavigationProperties)
+                {
+                    result.IncludedNavigationProperties.Add(navigation);
+                }
+            }
+
+            if (servicePredicateBuilder.SortCondition != null)
+            {
+                result.SortCondition = SortCondition<TEntity>.None();
+                result.SortCondition.SetSortItems(servicePredicateBuilder.SortCondition.GetSortItems());
+            }
+
+            return result;
+        }
+
+        #endregion
+
+
+
+    }
 }
