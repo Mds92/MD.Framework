@@ -14,8 +14,6 @@ D:\Works\MD.Framework\ConsoleApplication1\bin\Release\EntityFramework.SqlServer.
 D:\Works\MD.Framework\ConsoleApplication1\bin\Release\MD.PersianDateTime.pdb
 D:\Works\MD.Framework\ConsoleApplication1\bin\Release\MD.PersianDateTime.xml
 D:\Works\MD.Framework\ConsoleApplication1\bin\Release\Newtonsoft.Json.xml
-D:\Works\MD.Framework\ConsoleApplication1\obj\Release\ConsoleApplication1.csprojResolveAssemblyReference.cache
 D:\Works\MD.Framework\ConsoleApplication1\obj\Release\ConsoleApplication1.exe
 D:\Works\MD.Framework\ConsoleApplication1\obj\Release\ConsoleApplication1.pdb
-D:\Works\MD.Framework\ConsoleApplication1\bin\Release\MD.Framework.Business.dll.config
-D:\Works\MD.Framework\ConsoleApplication1\bin\Release\MD.Framework.Utility.dll.config
+D:\Works\MD.Framework\ConsoleApplication1\obj\Release\ConsoleApplication1.csprojResolveAssemblyReference.cache

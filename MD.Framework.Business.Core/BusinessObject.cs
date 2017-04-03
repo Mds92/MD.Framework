@@ -495,8 +495,7 @@ namespace MD.Framework.Business.Core
 
         public List<TEntity> UpdateWithSaveChanges(List<TEntity> entities)
         {
-            foreach (var entity in entities)
-                BeforeUpdate(entity);
+            Update(entities);
             SaveChanges(entities);
             return entities;
         }

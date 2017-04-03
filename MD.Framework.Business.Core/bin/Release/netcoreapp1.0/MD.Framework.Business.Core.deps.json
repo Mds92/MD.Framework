@@ -1,14 +1,14 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.0",
-    "signature": "fe3b6163dd9fa28aedfa69afbf0cd3d360be4db5"
+    "signature": "d15d333443f092aa70fac3e745ce002699da1f32"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v1.0": {
       "md.framework.business.core/1.0.1.0": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0"
+          "Microsoft.EntityFrameworkCore.SqlServer": "1.1.1"
         },
         "runtime": {
           "MD.Framework.Business.Core.dll": {}
@@ -37,11 +37,11 @@
           "lib/netstandard1.3/Microsoft.CSharp.dll": {}
         }
       },
-      "microsoft.entityframeworkcore/1.1.0": {
+      "microsoft.entityframeworkcore/1.1.1": {
         "dependencies": {
-          "Microsoft.Extensions.Caching.Memory": "1.1.0",
+          "Microsoft.Extensions.Caching.Memory": "1.1.1",
           "Microsoft.Extensions.DependencyInjection": "1.1.0",
-          "Microsoft.Extensions.Logging": "1.1.0",
+          "Microsoft.Extensions.Logging": "1.1.1",
           "NETStandard.Library": "1.6.1",
           "Remotion.Linq": "2.1.1",
           "System.Collections.Immutable": "1.3.0",
@@ -53,10 +53,10 @@
           "lib/netstandard1.3/Microsoft.EntityFrameworkCore.dll": {}
         }
       },
-      "microsoft.entityframeworkcore.relational/1.1.0": {
+      "microsoft.entityframeworkcore.relational/1.1.1": {
         "dependencies": {
           "Microsoft.CSharp": "4.3.0",
-          "Microsoft.EntityFrameworkCore": "1.1.0",
+          "Microsoft.EntityFrameworkCore": "1.1.1",
           "NETStandard.Library": "1.6.1",
           "System.Data.Common": "4.3.0",
           "System.Diagnostics.DiagnosticSource": "4.3.0"
@@ -65,9 +65,9 @@
           "lib/netstandard1.3/Microsoft.EntityFrameworkCore.Relational.dll": {}
         }
       },
-      "microsoft.entityframeworkcore.sqlserver/1.1.0": {
+      "microsoft.entityframeworkcore.sqlserver/1.1.1": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Relational": "1.1.0",
+          "Microsoft.EntityFrameworkCore.Relational": "1.1.1",
           "NETStandard.Library": "1.6.1",
           "System.Data.SqlClient": "4.3.0",
           "System.Threading.Thread": "4.3.0"
@@ -76,7 +76,7 @@
           "lib/netstandard1.3/Microsoft.EntityFrameworkCore.SqlServer.dll": {}
         }
       },
-      "microsoft.extensions.caching.abstractions/1.1.0": {
+      "microsoft.extensions.caching.abstractions/1.1.1": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "1.1.0",
           "NETStandard.Library": "1.6.1"
@@ -85,11 +85,11 @@
           "lib/netstandard1.0/Microsoft.Extensions.Caching.Abstractions.dll": {}
         }
       },
-      "microsoft.extensions.caching.memory/1.1.0": {
+      "microsoft.extensions.caching.memory/1.1.1": {
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "1.1.0",
+          "Microsoft.Extensions.Caching.Abstractions": "1.1.1",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
-          "Microsoft.Extensions.Options": "1.1.0",
+          "Microsoft.Extensions.Options": "1.1.1",
           "NETStandard.Library": "1.6.1"
         },
         "runtime": {
@@ -114,17 +114,17 @@
           "lib/netstandard1.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
         }
       },
-      "microsoft.extensions.logging/1.1.0": {
+      "microsoft.extensions.logging/1.1.1": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
-          "Microsoft.Extensions.Logging.Abstractions": "1.1.0",
+          "Microsoft.Extensions.Logging.Abstractions": "1.1.1",
           "NETStandard.Library": "1.6.1"
         },
         "runtime": {
           "lib/netstandard1.1/Microsoft.Extensions.Logging.dll": {}
         }
       },
-      "microsoft.extensions.logging.abstractions/1.1.0": {
+      "microsoft.extensions.logging.abstractions/1.1.1": {
         "dependencies": {
           "NETStandard.Library": "1.6.1"
         },
@@ -132,7 +132,7 @@
           "lib/netstandard1.1/Microsoft.Extensions.Logging.Abstractions.dll": {}
         }
       },
-      "microsoft.extensions.options/1.1.0": {
+      "microsoft.extensions.options/1.1.1": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
           "Microsoft.Extensions.Primitives": "1.1.0",
@@ -1507,40 +1507,40 @@
       "path": "microsoft.csharp/4.3.0",
       "hashPath": "microsoft.csharp.4.3.0.nupkg.sha512"
     },
-    "microsoft.entityframeworkcore/1.1.0": {
+    "microsoft.entityframeworkcore/1.1.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-S00vr6pLeoCMbm1PsXNZIceCAA/TUX83W3f2PcLFLGrx2QnGo5aqhtYjHvBhOVKJXZmt52EKEdORoTZVZ/swww==",
-      "path": "microsoft.entityframeworkcore/1.1.0",
-      "hashPath": "microsoft.entityframeworkcore.1.1.0.nupkg.sha512"
+      "sha512": "sha512-wkPi/5FriMthUoCBjqO/hCDEGdRrJ5aTGKa9jGHK7NYw1uSxb2FXksBuqqMfFve3sd2j4+9BpYtdvAJ6fzjeXg==",
+      "path": "microsoft.entityframeworkcore/1.1.1",
+      "hashPath": "microsoft.entityframeworkcore.1.1.1.nupkg.sha512"
     },
-    "microsoft.entityframeworkcore.relational/1.1.0": {
+    "microsoft.entityframeworkcore.relational/1.1.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-5LkSh1GHK/ZbI/2N6YxyofFKaAVe5/RBN38G6UQzOQVgfJxzucpJVyZt1mGHBkJ4yTlr4WQS9Wr3Ppa5X0opbw==",
-      "path": "microsoft.entityframeworkcore.relational/1.1.0",
-      "hashPath": "microsoft.entityframeworkcore.relational.1.1.0.nupkg.sha512"
+      "sha512": "sha512-wIeIC02b3uFQ0Mgd5yDcpzbGQs383p2BAkpMjNz2xffo9QAFXO1CDavuolRk5I2Rv/iBy9igB91BZoY0tpcMzA==",
+      "path": "microsoft.entityframeworkcore.relational/1.1.1",
+      "hashPath": "microsoft.entityframeworkcore.relational.1.1.1.nupkg.sha512"
     },
-    "microsoft.entityframeworkcore.sqlserver/1.1.0": {
+    "microsoft.entityframeworkcore.sqlserver/1.1.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-3Cg6izj0vvFBG4qenxeUMmFvhdW6bUBH9OqqK1s+f7IvEpgRuxz5vb1e5H15PodzxUziXOLG6je69JMC0Axuig==",
-      "path": "microsoft.entityframeworkcore.sqlserver/1.1.0",
-      "hashPath": "microsoft.entityframeworkcore.sqlserver.1.1.0.nupkg.sha512"
+      "sha512": "sha512-ltffbSKAfcVPWy4Ovbm+Qw6Kivmrn7SMWLmOl1mBJDZ+TmI7CSXwclLDunmlqyv2KsA/FGVgulQTe/RU3EgqCg==",
+      "path": "microsoft.entityframeworkcore.sqlserver/1.1.1",
+      "hashPath": "microsoft.entityframeworkcore.sqlserver.1.1.1.nupkg.sha512"
     },
-    "microsoft.extensions.caching.abstractions/1.1.0": {
+    "microsoft.extensions.caching.abstractions/1.1.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-uMbUDz/lNoO9LGc+DSjKMLWJk+y4qX6syDRcmQC0w6LSQzizkRqmo5Y8jO0ePtZRjF2lSGgO5URt4YgB6STDBQ==",
-      "path": "microsoft.extensions.caching.abstractions/1.1.0",
-      "hashPath": "microsoft.extensions.caching.abstractions.1.1.0.nupkg.sha512"
+      "sha512": "sha512-5Ll69b2mk5vRMUgDbf0BWIYN3RkXdtNb+MB2GOhkxhq6Zldq8hpj+zN/gAs01JOcM8M/lkGAgxjzxh69QKK+Hg==",
+      "path": "microsoft.extensions.caching.abstractions/1.1.1",
+      "hashPath": "microsoft.extensions.caching.abstractions.1.1.1.nupkg.sha512"
     },
-    "microsoft.extensions.caching.memory/1.1.0": {
+    "microsoft.extensions.caching.memory/1.1.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ihFzFRKf/LrXHIvn0wDDt6oLxaAjsCPfrIzV9CLrTURD7qT+HujJ0TaRfC91e6tB8OAgkzY4AsHRBNq8KzrQQQ==",
-      "path": "microsoft.extensions.caching.memory/1.1.0",
-      "hashPath": "microsoft.extensions.caching.memory.1.1.0.nupkg.sha512"
+      "sha512": "sha512-E35yEKFOc8Q/Ocfg5QDdcp/1nzUtycDzJjvUJU3R1iDp/iNl3/qDCyOWmU8CjbtrsD1CpAbvGdwOMJTOw3fqcw==",
+      "path": "microsoft.extensions.caching.memory/1.1.1",
+      "hashPath": "microsoft.extensions.caching.memory.1.1.1.nupkg.sha512"
     },
     "microsoft.extensions.dependencyinjection/1.1.0": {
       "type": "package",
@@ -1556,26 +1556,26 @@
       "path": "microsoft.extensions.dependencyinjection.abstractions/1.1.0",
       "hashPath": "microsoft.extensions.dependencyinjection.abstractions.1.1.0.nupkg.sha512"
     },
-    "microsoft.extensions.logging/1.1.0": {
+    "microsoft.extensions.logging/1.1.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-IbNogJJE3NRtc5/DAtKEkhXaUQK9N7I6A5G2+ZfyBzWMvAgLKSimESpNMp+gnzUYsW3YbHkeT8jLk9m/3vGY5A==",
-      "path": "microsoft.extensions.logging/1.1.0",
-      "hashPath": "microsoft.extensions.logging.1.1.0.nupkg.sha512"
+      "sha512": "sha512-cxLG416uOEFmnv7w4/rsVKD4dRYFuUY+G5WXpLVLMNIL6VYcQkDe67cx2IWBrtUieA08w9eCuxrd2pxIrJ7Wtg==",
+      "path": "microsoft.extensions.logging/1.1.1",
+      "hashPath": "microsoft.extensions.logging.1.1.1.nupkg.sha512"
     },
-    "microsoft.extensions.logging.abstractions/1.1.0": {
+    "microsoft.extensions.logging.abstractions/1.1.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-5zDtM0Dal+pwDIj49PPq9Y8SYu6z70v55VDx70rOuquLTlaCIdv9uItkcp9c1FH/ASNdfANVnh1cTwd85dyE+Q==",
-      "path": "microsoft.extensions.logging.abstractions/1.1.0",
-      "hashPath": "microsoft.extensions.logging.abstractions.1.1.0.nupkg.sha512"
+      "sha512": "sha512-MMWQNrwQKrSigIaGpPWIK9ZZCNd9aaCHaLgwfPiJNdOfU3UE+RA093YZ7B879MdZ1qSFPcS1QLLNjD+dxXX7Aw==",
+      "path": "microsoft.extensions.logging.abstractions/1.1.1",
+      "hashPath": "microsoft.extensions.logging.abstractions.1.1.1.nupkg.sha512"
     },
-    "microsoft.extensions.options/1.1.0": {
+    "microsoft.extensions.options/1.1.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-NZlEcVm+SPPeNAkYuwiZdqnMrs/Lne/cDAWiBal1EL//m/KjDgOC6jKg5m9rt/cvqb7Obql5e0JtkNmdP1fGQA==",
-      "path": "microsoft.extensions.options/1.1.0",
-      "hashPath": "microsoft.extensions.options.1.1.0.nupkg.sha512"
+      "sha512": "sha512-G6+0sSQV81xYe0FYiraB3nt6Bnb2L8S+e87UrhasxbqFVKjnTeHEfEae3qNvoG30zp8jTFf7E25e05Lv9VIP5w==",
+      "path": "microsoft.extensions.options/1.1.1",
+      "hashPath": "microsoft.extensions.options.1.1.1.nupkg.sha512"
     },
     "microsoft.extensions.primitives/1.1.0": {
       "type": "package",

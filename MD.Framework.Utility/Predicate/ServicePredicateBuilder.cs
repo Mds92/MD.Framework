@@ -131,10 +131,7 @@ namespace MD.Framework.Utility
 
         private static ExpressionInfo<TEntity> GetExpressionInfoFromPredicateBuilder(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
         {
-            if (servicePredicateBuilder == null)
-            {
-                return null;
-            }
+            if (servicePredicateBuilder == null) return null;
             var result = new ExpressionInfo<TEntity>();
             if (servicePredicateBuilder.Criteria != null)
             {
@@ -168,8 +165,5 @@ namespace MD.Framework.Utility
         }
 
         #endregion
-
-
-
     }
 }
