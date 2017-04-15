@@ -26,3 +26,4 @@ D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\MD.PersianDateTime.xml
 D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\Newtonsoft.Json.xml
 D:\Source\MD.Framework\MD.Framework.Utility\obj\Release\MD.Framework.Utility.dll
 D:\Source\MD.Framework\MD.Framework.Utility\obj\Release\MD.Framework.Utility.pdb
+D:\Source\MD.Framework\MD.Framework.Utility\obj\Release\MD.Framework.Utility.csprojResolveAssemblyReference.cache

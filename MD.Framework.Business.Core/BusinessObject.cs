@@ -364,7 +364,6 @@ namespace MD.Framework.Business.Core
             return Task.Run(() => SelectAll(orderByExpression, currentPage, itemsPerPage, includeNavigationProperties));
         }
 
-
         #endregion
 
         #region SelectBy
