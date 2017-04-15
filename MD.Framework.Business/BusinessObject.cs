@@ -501,7 +501,6 @@ namespace MD.Framework.Business
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderByFunc = null;
             if (orderByExpression != null)
                 orderByFunc = orderByExpression.Compile();
-
             if (includeNavigationProperties == null || !includeNavigationProperties.Any())
             {
                 if (orderByFunc != null)
@@ -521,17 +520,51 @@ namespace MD.Framework.Business
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
+        public IQueryable<TEntity> SelectAll(Expression<Func<TEntity, bool>> predicate, Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, int currentPage, int itemsPerPage, List<string> includeNavigationProperties = null)
+        {
+            var orderByFunc = orderByExpression.Compile();
+            if (includeNavigationProperties == null || !includeNavigationProperties.Any())
+                return orderByFunc(DbSet.Where(predicate)).Skip(((currentPage - 1) * itemsPerPage)).Take(itemsPerPage);
+            var query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
+            return orderByFunc(query.Where(predicate)).Skip(((currentPage - 1) * itemsPerPage)).Take(itemsPerPage);
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select)]
+        public IQueryable<TEntity> SelectAll(Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, int currentPage, int itemsPerPage, List<string> includeNavigationProperties = null)
+        {
+            var orderByFunc = orderByExpression.Compile();
+            if (includeNavigationProperties == null || !includeNavigationProperties.Any())
+                return orderByFunc(DbSet).Skip(((currentPage - 1) * itemsPerPage)).Take(itemsPerPage);
+            var query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
+            return orderByFunc(query).Skip(((currentPage - 1) * itemsPerPage)).Take(itemsPerPage);
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select)]
         public IQueryable<TEntity> SelectAll(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
         {
+            if (servicePredicateBuilder.PaginationData != null)
+            {
+                if (servicePredicateBuilder.SortCondition == null)
+                    throw new Exception($"برای گرفتن صفحه ای از '{EntityType.Name}' باید مرتب سازی را تعیین نمایید");
+                return SelectAll(servicePredicateBuilder.Criteria.GetExpression(), servicePredicateBuilder.SortCondition.GetIQueryableSortingExpression(),
+                    servicePredicateBuilder.PaginationData.PageNumber, servicePredicateBuilder.PaginationData.ItemsPerPage, servicePredicateBuilder.IncludedNavigationProperties);
+            }
             Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression = null;
             if (servicePredicateBuilder.SortCondition != null)
                 orderByExpression = servicePredicateBuilder.SortCondition.GetIQueryableSortingExpression();
             return SelectAll(servicePredicateBuilder.Criteria.GetExpression(), orderByExpression, servicePredicateBuilder.IncludedNavigationProperties);
+
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
         public IQueryable<TEntity> SelectAll(ExpressionInfo<TEntity> expressionInfo)
         {
+            if (expressionInfo.PaginationData != null)
+            {
+                if (expressionInfo.SortCondition == null)
+                    throw new Exception($"برای گرفتن صفحه ای از '{EntityType.Name}' باید مرتب سازی را تعیین نمایید");
+                return SelectAll(expressionInfo.Expression, expressionInfo.SortCondition.GetIQueryableSortingExpression(), expressionInfo.PaginationData.PageNumber, expressionInfo.PaginationData.ItemsPerPage, expressionInfo.IncludedNavigationProperties);
+            }
             Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression = null;
             if (expressionInfo.SortCondition != null)
                 orderByExpression = expressionInfo.SortCondition.GetIQueryableSortingExpression();
@@ -562,6 +595,18 @@ namespace MD.Framework.Business
         public Task<IQueryable<TEntity>> SelectAllAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, List<string> includeNavigationProperties = null)
         {
             return Task.Run(() => SelectAll(predicate, orderByExpression, includeNavigationProperties));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select)]
+        public Task<IQueryable<TEntity>> SelectAllAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, int currentPage, int itemsPerPage, List<string> includeNavigationProperties = null)
+        {
+            return Task.Run(() => SelectAll(predicate, orderByExpression, currentPage, itemsPerPage, includeNavigationProperties));
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select)]
+        public Task<IQueryable<TEntity>> SelectAllAsync(Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, int currentPage, int itemsPerPage, List<string> includeNavigationProperties = null)
+        {
+            return Task.Run(() => SelectAll(orderByExpression, currentPage, itemsPerPage, includeNavigationProperties));
         }
 
         [DataObjectMethod(DataObjectMethodType.Select)]
@@ -693,74 +738,6 @@ namespace MD.Framework.Business
         public Task<int> SelectCountAsync(ExpressionInfo<TEntity> expressionInfo)
         {
             return SelectCountAsync(expressionInfo.Expression);
-        }
-
-        #endregion
-
-        #region SelectPage
-
-        [DataObjectMethod(DataObjectMethodType.Select)]
-        public IQueryable<TEntity> SelectPage(Expression<Func<TEntity, bool>> predicate, Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, int currentPage, int itemsPerPage, List<string> includeNavigationProperties = null)
-        {
-            var orderByFunc = orderByExpression.Compile();
-
-            if (includeNavigationProperties == null || !includeNavigationProperties.Any())
-                return orderByFunc(DbSet.Where(predicate)).Skip(((currentPage - 1) * itemsPerPage)).Take(itemsPerPage);
-            var query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
-            return orderByFunc(query.Where(predicate)).Skip(((currentPage - 1) * itemsPerPage)).Take(itemsPerPage);
-        }
-
-        [DataObjectMethod(DataObjectMethodType.Select)]
-        public IQueryable<TEntity> SelectPage(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
-        {
-            if (servicePredicateBuilder.SortCondition == null)
-                throw new Exception($"برای گرفتن صفحه ای از '{EntityType.Name}' باید مرتب سازی را تعیین نمایید");
-            return SelectPage(servicePredicateBuilder.Criteria.GetExpression(), servicePredicateBuilder.SortCondition.GetIQueryableSortingExpression(),
-                servicePredicateBuilder.PaginationData.PageNumber, servicePredicateBuilder.PaginationData.ItemsPerPage, servicePredicateBuilder.IncludedNavigationProperties);
-        }
-
-        [DataObjectMethod(DataObjectMethodType.Select)]
-        public IQueryable<TEntity> SelectPage(ExpressionInfo<TEntity> expressionInfo)
-        {
-            if (expressionInfo.SortCondition == null) throw new Exception($"برای گرفتن صفحه ای از '{EntityType.Name}' باید مرتب سازی را تعیین نمایید");
-            return SelectPage(expressionInfo.Expression, expressionInfo.SortCondition.GetIQueryableSortingExpression(), expressionInfo.PaginationData.PageNumber, expressionInfo.PaginationData.ItemsPerPage, expressionInfo.IncludedNavigationProperties);
-        }
-
-        [DataObjectMethod(DataObjectMethodType.Select)]
-        public IQueryable<TEntity> SelectPage(Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, int currentPage, int itemsPerPage, List<string> includeNavigationProperties = null)
-        {
-            var orderByFunc = orderByExpression.Compile();
-
-            if (includeNavigationProperties == null || !includeNavigationProperties.Any())
-                return orderByFunc(DbSet).Skip(((currentPage - 1) * itemsPerPage)).Take(itemsPerPage);
-            var query = includeNavigationProperties.Aggregate<string, DbQuery<TEntity>>(DbSet, (current, property) => current.Include(property));
-            return orderByFunc(query).Skip(((currentPage - 1) * itemsPerPage)).Take(itemsPerPage);
-        }
-
-        // ----------- Async -----------------
-
-        [DataObjectMethod(DataObjectMethodType.Select)]
-        public Task<IQueryable<TEntity>> SelectPageAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, int currentPage, int itemsPerPage, List<string> includeNavigationProperties = null)
-        {
-            return Task.Run(() => SelectPage(predicate, orderByExpression, currentPage, itemsPerPage, includeNavigationProperties));
-        }
-
-        [DataObjectMethod(DataObjectMethodType.Select)]
-        public Task<IQueryable<TEntity>> SelectPageAsync(ServicePredicateBuilder<TEntity> servicePredicateBuilder)
-        {
-            return Task.Run(() => SelectPage(servicePredicateBuilder));
-        }
-
-        [DataObjectMethod(DataObjectMethodType.Select)]
-        public Task<IQueryable<TEntity>> SelectPageAsync(ExpressionInfo<TEntity> expressionInfo)
-        {
-            return Task.Run(() => SelectPage(expressionInfo));
-        }
-
-        [DataObjectMethod(DataObjectMethodType.Select)]
-        public Task<IQueryable<TEntity>> SelectPageAsync(Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, int currentPage, int itemsPerPage, List<string> includeNavigationProperties = null)
-        {
-            return Task.Run(() => SelectPage(orderByExpression, currentPage, itemsPerPage, includeNavigationProperties));
         }
 
         #endregion

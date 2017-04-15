@@ -7,12 +7,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MD.Framework.Business")]
-[assembly: AssemblyDescription("Created By Mohammad Dayyan 1391, mds_soft@yahoo.com")]
+[assembly: AssemblyDescription("Created By Mohammad Dayyan since 1391, mds_soft@yahoo.com")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mds Soft")]
 [assembly: AssemblyProduct("MD.Framework.Business")]
-[assembly: AssemblyCopyright("Copyright © Mohammad Dayyan  2012-2014")]
-[assembly: AssemblyTrademark("Mohammad Dayyan, 0919-7898568")]
+[assembly: AssemblyCopyright("Copyright © Mohammad Dayyan  2012-2017")]
+[assembly: AssemblyTrademark("Mohammad Dayyan, 0903-3339923")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -33,5 +33,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("4.1.3.0")]
-[assembly: AssemblyFileVersion("4.1.3.0")]
+[assembly: AssemblyVersion("4.2.0.0")]
+[assembly: AssemblyFileVersion("4.2.0.0")]

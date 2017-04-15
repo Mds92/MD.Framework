@@ -4,4 +4,3 @@ D:\Works\MD.Framework\MD.Framework.Business.Core\obj\Release\netcoreapp1.0\MD.Fr
 D:\Works\MD.Framework\MD.Framework.Business.Core\bin\Release\netcoreapp1.0\MD.Framework.Business.Core.pdb
 D:\Works\MD.Framework\MD.Framework.Business.Core\obj\Release\netcoreapp1.0\MD.Framework.Business.Core.dll
 D:\Works\MD.Framework\MD.Framework.Business.Core\obj\Release\netcoreapp1.0\MD.Framework.Business.Core.pdb
-D:\Works\MD.Framework\MD.Framework.Business.Core\obj\Release\netcoreapp1.0\MD.Framework.Business.Core.csprojResolveAssemblyReference.cache
