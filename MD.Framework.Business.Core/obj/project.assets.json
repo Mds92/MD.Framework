@@ -7712,10 +7712,10 @@
   "project": {
     "version": "1.0.2",
     "restore": {
-      "projectUniqueName": "D:\\Works\\MD.Framework\\MD.Framework.Business.Core\\MD.Framework.Business.Core.csproj",
+      "projectUniqueName": "D:\\Source\\MD.Framework\\MD.Framework.Business.Core\\MD.Framework.Business.Core.csproj",
       "projectName": "MD.Framework.Business.Core",
-      "projectPath": "D:\\Works\\MD.Framework\\MD.Framework.Business.Core\\MD.Framework.Business.Core.csproj",
-      "outputPath": "D:\\Works\\MD.Framework\\MD.Framework.Business.Core\\obj\\",
+      "projectPath": "D:\\Source\\MD.Framework\\MD.Framework.Business.Core\\MD.Framework.Business.Core.csproj",
+      "outputPath": "D:\\Source\\MD.Framework\\MD.Framework.Business.Core\\obj\\",
       "projectStyle": "PackageReference",
       "originalTargetFrameworks": [
         "netcoreapp1.0"

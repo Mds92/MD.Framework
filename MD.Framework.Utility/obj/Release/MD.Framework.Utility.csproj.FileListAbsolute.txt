@@ -12,3 +12,17 @@ D:\Works\MD.Framework\MD.Framework.Utility\bin\Release\MD.PersianDateTime.xml
 D:\Works\MD.Framework\MD.Framework.Utility\bin\Release\Newtonsoft.Json.xml
 D:\Works\MD.Framework\MD.Framework.Utility\obj\Release\MD.Framework.Utility.dll
 D:\Works\MD.Framework\MD.Framework.Utility\obj\Release\MD.Framework.Utility.pdb
+D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\MD.Framework.Utility.dll.config
+D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\MD.Framework.Utility.dll
+D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\MD.Framework.Utility.pdb
+D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\EntityFramework.dll
+D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\EntityFramework.SqlServer.dll
+D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\MD.PersianDateTime.dll
+D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\Newtonsoft.Json.dll
+D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\EntityFramework.xml
+D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\EntityFramework.SqlServer.xml
+D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\MD.PersianDateTime.pdb
+D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\MD.PersianDateTime.xml
+D:\Source\MD.Framework\MD.Framework.Utility\bin\Release\Newtonsoft.Json.xml
+D:\Source\MD.Framework\MD.Framework.Utility\obj\Release\MD.Framework.Utility.dll
+D:\Source\MD.Framework\MD.Framework.Utility\obj\Release\MD.Framework.Utility.pdb

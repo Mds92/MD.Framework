@@ -20,6 +20,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="D:\Works\MD.Framework\MD.Framework.Business.Core\bin\Release\netcoreapp1.0\MD.Framework.Business.Core.dll" target="lib\netcoreapp1.0\MD.Framework.Business.Core.dll" />
+    <file src="D:\Source\MD.Framework\MD.Framework.Business.Core\bin\Release\netcoreapp1.0\MD.Framework.Business.Core.dll" target="lib\netcoreapp1.0\MD.Framework.Business.Core.dll" />
   </files>
 </package>
