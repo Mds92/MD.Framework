@@ -657,11 +657,10 @@ namespace MD.Framework.Utility
 			}
 			else if (targetPropertyType.IsNumericType())
 			{
-				propertyValueInString = Regex.Replace(propertyValueInString, @"[^\d\.]+|\.+$|^\.+", "");
 				try
 				{
 					var typeConverter = TypeDescriptor.GetConverter(targetPropertyType);
-					propertyValue = typeConverter.ConvertFrom(propertyValueInString);
+					propertyValue = typeConverter.ConvertFrom(null, CultureInfo.InvariantCulture, propertyValueInString);
 				}
 				catch
 				{
@@ -674,7 +673,7 @@ namespace MD.Framework.Utility
 				try
 				{
 					var typeConverter = TypeDescriptor.GetConverter(targetPropertyType);
-					propertyValue = typeConverter.ConvertFrom(propertyValueInString.Trim());
+					propertyValue = typeConverter.ConvertFrom(null, CultureInfo.InvariantCulture, propertyValueInString.Trim());
 				}
 				catch
 				{ 

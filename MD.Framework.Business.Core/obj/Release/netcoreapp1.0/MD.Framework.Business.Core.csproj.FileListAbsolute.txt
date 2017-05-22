@@ -11,3 +11,9 @@ D:\Source\MD.Framework\MD.Framework.Business.Core\obj\Release\netcoreapp1.0\MD.F
 D:\Source\MD.Framework\MD.Framework.Business.Core\obj\Release\netcoreapp1.0\MD.Framework.Business.Core.dll
 D:\Source\MD.Framework\MD.Framework.Business.Core\obj\Release\netcoreapp1.0\MD.Framework.Business.Core.pdb
 D:\Source\MD.Framework\MD.Framework.Business.Core\obj\Release\netcoreapp1.0\MD.Framework.Business.Core.csprojResolveAssemblyReference.cache
+D:\Sources\MD.Framework\MD.Framework.Business.Core\bin\Release\netcoreapp1.0\MD.Framework.Business.Core.deps.json
+D:\Sources\MD.Framework\MD.Framework.Business.Core\bin\Release\netcoreapp1.0\MD.Framework.Business.Core.dll
+D:\Sources\MD.Framework\MD.Framework.Business.Core\bin\Release\netcoreapp1.0\MD.Framework.Business.Core.pdb
+D:\Sources\MD.Framework\MD.Framework.Business.Core\obj\Release\netcoreapp1.0\MD.Framework.Business.Core.AssemblyInfo.cs
+D:\Sources\MD.Framework\MD.Framework.Business.Core\obj\Release\netcoreapp1.0\MD.Framework.Business.Core.dll
+D:\Sources\MD.Framework\MD.Framework.Business.Core\obj\Release\netcoreapp1.0\MD.Framework.Business.Core.pdb
