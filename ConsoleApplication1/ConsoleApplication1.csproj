@@ -46,17 +46,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="MD.Framework.Business, Version=4.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MD.Framework.4.2.0.0\lib\MD.Framework.Business.dll</HintPath>
+    <Reference Include="MD.Framework.Business, Version=4.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MD.Framework.4.2.1.0\lib\MD.Framework.Business.dll</HintPath>
     </Reference>
-    <Reference Include="MD.Framework.Utility, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MD.Framework.4.2.0.0\lib\MD.Framework.Utility.dll</HintPath>
+    <Reference Include="MD.Framework.Utility, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MD.Framework.4.2.1.0\lib\MD.Framework.Utility.dll</HintPath>
     </Reference>
     <Reference Include="MD.PersianDateTime, Version=3.6.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MD.PersianDateTime.3.6.2\lib\MD.PersianDateTime.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
