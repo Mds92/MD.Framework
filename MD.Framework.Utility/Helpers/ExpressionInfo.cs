@@ -12,6 +12,11 @@ namespace MD.Framework.Utility
     /// </summary>
     public class ExpressionInfo<TEntity> where TEntity : class
     {
+        public ExpressionInfo()
+        {
+            IncludedNavigationProperties = new List<string>();
+        }
+
         public Expression<Func<TEntity, bool>> Expression;
         public SortCondition<TEntity> SortCondition { get; set; }
         public List<string> IncludedNavigationProperties { get; set; }
