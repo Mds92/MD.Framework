@@ -284,6 +284,7 @@ namespace MD.Framework.Business
         [DataObjectMethod(DataObjectMethodType.Insert, true)]
         public TEntity Insert(TEntity entity)
         {
+
             return Insert(new List<TEntity> { entity }).FirstOrDefault();
         }
 
@@ -292,6 +293,7 @@ namespace MD.Framework.Business
         {
             foreach (var entity in entities)
             {
+                BeforeUpdateOrSaveChangesOrAddOrInsert(entity);
                 BeforeAddOrInsert(entity);
                 DbSet.Add(entity);
                 Context.Entry(entity).State = EntityState.Added;
@@ -814,7 +816,10 @@ namespace MD.Framework.Business
             {
                 if (entities != null)
                     foreach (var entity in entities)
+                    {
                         BeforeUpdateOrSaveChangesOrAddOrInsert(entity);
+                        BeforeUpdate(entity);
+                    }
                 Context.SaveChanges();
             }
             catch (Exception ex)
@@ -847,6 +852,7 @@ namespace MD.Framework.Business
             foreach (var entity in entities)
             {
                 BeforeUpdate(entity);
+                BeforeUpdateOrSaveChangesOrAddOrInsert(entity);
                 Context.Entry(entity).State = EntityState.Modified;
             }
             return entities;
