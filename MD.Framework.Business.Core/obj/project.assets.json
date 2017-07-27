@@ -7736,7 +7736,7 @@
     "C:\\Users\\Mohammad\\.nuget\\packages\\": {}
   },
   "project": {
-    "version": "1.0.3",
+    "version": "1.1.0",
     "restore": {
       "projectUniqueName": "D:\\Sources\\MD.Framework\\MD.Framework.Business.Core\\MD.Framework.Business.Core.csproj",
       "projectName": "MD.Framework.Business.Core",
@@ -7762,7 +7762,7 @@
           },
           "Microsoft.EntityFrameworkCore.SqlServer": {
             "target": "Package",
-            "version": "[1.1.2, )"
+            "version": "1.1.2"
           }
         }
       }
