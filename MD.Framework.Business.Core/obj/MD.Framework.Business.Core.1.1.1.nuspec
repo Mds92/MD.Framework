@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>MD.Framework.Business.Core</id>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <authors>Mohammad Dayyan</authors>
     <owners>Mohammad Dayyan</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

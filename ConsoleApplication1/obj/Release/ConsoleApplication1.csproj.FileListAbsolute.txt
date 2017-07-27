@@ -51,6 +51,5 @@ D:\Sources\MD.Framework\ConsoleApplication1\bin\Release\MD.Framework.Utility.pdb
 D:\Sources\MD.Framework\ConsoleApplication1\bin\Release\MD.PersianDateTime.pdb
 D:\Sources\MD.Framework\ConsoleApplication1\bin\Release\MD.PersianDateTime.xml
 D:\Sources\MD.Framework\ConsoleApplication1\bin\Release\Newtonsoft.Json.xml
-D:\Sources\MD.Framework\ConsoleApplication1\obj\Release\ConsoleApplication1.csprojResolveAssemblyReference.cache
 D:\Sources\MD.Framework\ConsoleApplication1\obj\Release\ConsoleApplication1.exe
 D:\Sources\MD.Framework\ConsoleApplication1\obj\Release\ConsoleApplication1.pdb

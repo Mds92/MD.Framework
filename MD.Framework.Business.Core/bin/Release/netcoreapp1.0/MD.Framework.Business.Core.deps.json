@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v1.0": {
-      "md.framework.business.core/1.1.0.0": {
+      "md.framework.business.core/1.1.1.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.SqlServer": "1.1.2"
         },
@@ -1495,7 +1495,7 @@
     }
   },
   "libraries": {
-    "md.framework.business.core/1.1.0.0": {
+    "md.framework.business.core/1.1.1.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
