@@ -473,7 +473,10 @@ namespace MD.Framework.Business.Core
             {
                 if (entities != null)
                     foreach (var entity in entities)
+                    {
+                        BeforeUpdate(entity);
                         BeforeUpdateOrSaveChangesOrAddOrInsert(entity);
+                    }
                 Context.SaveChanges();
             }
             catch (Exception ex)
@@ -504,6 +507,7 @@ namespace MD.Framework.Business.Core
             foreach (var entity in entities)
             {
                 BeforeUpdate(entity);
+                BeforeUpdateOrSaveChangesOrAddOrInsert(entity);
                 Context.Entry(entity).State = EntityState.Modified;
             }
             return entities;
