@@ -7,7 +7,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
 namespace MD.Framework.Utility
@@ -395,7 +394,7 @@ namespace MD.Framework.Utility
 			{
 				stringConvertMethodInfo = typeof(SqlFunctions).GetMethod("StringConvert", new[] { nullableDoubleType });
 				unaryExpression = Expression.Convert(leftSile, nullableDoubleType);
-				convertedRightSideConstantExpression = Expression.Constant(valueObject == null ? null : valueObject.ToString());
+				convertedRightSideConstantExpression = Expression.Constant(valueObject?.ToString());
 			}
 
 			switch (conditionForConvert.OperationType)

@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <Authors>Mohammad Dayyan</Authors>
+    <Company>Mohammad Dayyan</Company>
+    <Product>Mohammad Dayyan</Product>
+    <Description>Some utility to work with EntityFramework</Description>
+    <Copyright>Mohammad Dayyan</Copyright>
+    <PackageLicenseUrl>https://choosealicense.com/licenses/apache-2.0/</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Mds92/MD.Framework</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Mds92/MD.Framework</RepositoryUrl>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageTags>c# .netcore framework entityframework</PackageTags>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MD.PersianDateTime.Core" Version="1.0.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

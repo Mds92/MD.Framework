@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MD.Framework.Utility")]
-[assembly: AssemblyDescription("Created By Mohammad Dayyan 1393-1394, mds_soft@yahoo.com")]
+[assembly: AssemblyDescription("Created By Mohammad Dayyan 1393-1397, mds_soft@yahoo.com")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mds Soft")]
 [assembly: AssemblyProduct("MD.Framework.Utility")]
