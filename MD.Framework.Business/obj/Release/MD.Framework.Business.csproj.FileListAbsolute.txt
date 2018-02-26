@@ -11,7 +11,6 @@ D:\Sources\MD.Framework\MD.Framework.Business\bin\Release\MD.Framework.Utility.d
 D:\Sources\MD.Framework\MD.Framework.Business\bin\Release\EntityFramework.xml
 D:\Sources\MD.Framework\MD.Framework.Business\bin\Release\EntityFramework.SqlServer.xml
 D:\Sources\MD.Framework\MD.Framework.Business\bin\Release\Newtonsoft.Json.xml
-D:\Sources\MD.Framework\MD.Framework.Business\bin\Release\MD.PersianDateTime.pdb
 D:\Sources\MD.Framework\MD.Framework.Business\bin\Release\MD.PersianDateTime.xml
 D:\Sources\MD.Framework\MD.Framework.Business\obj\Release\MD.Framework.Business.csprojResolveAssemblyReference.cache
 D:\Sources\MD.Framework\MD.Framework.Business\obj\Release\MD.Framework.Business.dll

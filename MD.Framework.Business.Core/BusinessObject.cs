@@ -146,7 +146,7 @@ namespace MD.Framework.Business.Core
         #endregion
 
         #region Remove
-        
+
         public void Remove(Expression<Func<TEntity, bool>> predicate)
         {
             var entities = DbSet.Where(predicate);
@@ -261,7 +261,7 @@ namespace MD.Framework.Business.Core
             if (includeNavigationProperties == null || includeNavigationProperties.Count <= 0) return result;
             return includeNavigationProperties.Aggregate(result, (current, property) => current.Include(property));
         }
-        
+
         public IQueryable<TEntity> SelectAll(List<TIdentifier> ids, List<string> includeNavigationProperties = null)
         {
             var iCollectionType = typeof(ICollection<TIdentifier>);
@@ -278,7 +278,7 @@ namespace MD.Framework.Business.Core
 
             return query.Where(lambdaExpression);
         }
-        
+
         public IQueryable<TEntity> SelectAll(Expression<Func<TEntity, bool>> predicate, List<string> includeNavigationProperties = null)
         {
             if (includeNavigationProperties == null || !includeNavigationProperties.Any())
@@ -286,7 +286,7 @@ namespace MD.Framework.Business.Core
             var query = includeNavigationProperties.Aggregate<string, IQueryable<TEntity>>(DbSet, (current, property) => current.Include(property));
             return query.Where(predicate);
         }
-        
+
         public IQueryable<TEntity> SelectAll(Expression<Func<TEntity, bool>> predicate, Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, List<string> includeNavigationProperties = null)
         {
             IQueryable<TEntity> result;
@@ -338,17 +338,17 @@ namespace MD.Framework.Business.Core
         {
             return Task.Run(() => SelectAll(includeNavigationProperties));
         }
-        
+
         public Task<IQueryable<TEntity>> SelectAllAsync(List<TIdentifier> ids, List<string> includeNavigationProperties = null)
         {
             return Task.Run(() => SelectAll(ids, includeNavigationProperties));
         }
-        
+
         public Task<IQueryable<TEntity>> SelectAllAsync(Expression<Func<TEntity, bool>> predicate, List<string> includeNavigationProperties = null)
         {
             return Task.Run(() => SelectAll(predicate, includeNavigationProperties));
         }
-        
+
         public Task<IQueryable<TEntity>> SelectAllAsync(Expression<Func<TEntity, bool>> predicate, Expression<Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>> orderByExpression, List<string> includeNavigationProperties = null)
         {
             return Task.Run(() => SelectAll(predicate, orderByExpression, includeNavigationProperties));
@@ -380,7 +380,7 @@ namespace MD.Framework.Business.Core
             }
             return result;
         }
-        
+
         public TEntity SelectBy(TIdentifier identifier, List<string> includeNavigationProperties = null)
         {
             var parameter = Expression.Parameter(EntityType, "q");
@@ -395,7 +395,7 @@ namespace MD.Framework.Business.Core
         {
             return Task.Run(() => SelectBy(predicate, includeNavigationProperties));
         }
-        
+
         public Task<TEntity> SelectByAsync(TIdentifier identifier, List<string> includeNavigationProperties = null)
         {
             return Task.Run(() => SelectBy(identifier, includeNavigationProperties));
@@ -404,7 +404,7 @@ namespace MD.Framework.Business.Core
         #endregion
 
         #region SelectCount
-        
+
         public int SelectCount()
         {
             return DbSet.Count();
@@ -416,12 +416,12 @@ namespace MD.Framework.Business.Core
         }
 
         // ----------- Async -----------------
-        
+
         public Task<int> SelectCountAsync()
         {
             return DbSet.CountAsync();
         }
-        
+
         public Task<int> SelectCountAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.CountAsync(predicate);
@@ -438,7 +438,7 @@ namespace MD.Framework.Business.Core
                        ? (allItemsCount / itemPerPage)
                        : (allItemsCount / itemPerPage) + 1;
         }
-        
+
         public int CountOfPage(int itemPerPage)
         {
             var allItemsCount = SelectCount();
@@ -448,7 +448,7 @@ namespace MD.Framework.Business.Core
         }
 
         // ----------- Async -----------------
-        
+
         public Task<int> CountOfPageAsync(Expression<Func<TEntity, bool>> predicate, int itemPerPage)
         {
             return Task.Run(() => CountOfPage(predicate, itemPerPage));
@@ -466,6 +466,7 @@ namespace MD.Framework.Business.Core
         #region Update
 
         protected virtual void BeforeUpdate(TEntity entity) { }
+        protected virtual void AfterSaveChanges(TEntity entity) { }
 
         public void SaveChanges(List<TEntity> entities = null)
         {
@@ -478,6 +479,9 @@ namespace MD.Framework.Business.Core
                         BeforeUpdateOrSaveChangesOrAddOrInsert(entity);
                     }
                 Context.SaveChanges();
+                if (entities != null)
+                    foreach (var entity in entities)
+                        AfterSaveChanges(entity);
             }
             catch (Exception ex)
             {
@@ -509,6 +513,7 @@ namespace MD.Framework.Business.Core
                 BeforeUpdate(entity);
                 BeforeUpdateOrSaveChangesOrAddOrInsert(entity);
                 Context.Entry(entity).State = EntityState.Modified;
+                AfterSaveChanges(entity);
             }
             return entities;
         }
@@ -532,7 +537,7 @@ namespace MD.Framework.Business.Core
         {
             return Context.SaveChangesAsync();
         }
-        
+
         public Task<TEntity> UpdateWithSaveChangesAsync(TEntity entity)
         {
             return Task.Run(() => UpdateWithSaveChanges(entity));

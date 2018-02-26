@@ -1,0 +1,4 @@
+D:\Sources\MD.Framework\MD.Framework.Utility.Core\obj\Debug\netcoreapp1.1\MD.Framework.Utility.Core.csprojResolveAssemblyReference.cache
+D:\Sources\MD.Framework\MD.Framework.Utility.Core\obj\Debug\netcoreapp1.1\MD.Framework.Utility.Core.csproj.CoreCompileInputs.cache
+D:\Sources\MD.Framework\MD.Framework.Utility.Core\obj\Debug\netcoreapp1.1\MD.Framework.Utility.Core.AssemblyInfoInputs.cache
+D:\Sources\MD.Framework\MD.Framework.Utility.Core\obj\Debug\netcoreapp1.1\MD.Framework.Utility.Core.AssemblyInfo.cs

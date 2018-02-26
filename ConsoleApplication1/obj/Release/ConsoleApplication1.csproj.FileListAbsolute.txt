@@ -11,7 +11,6 @@ D:\Sources\MD.Framework\ConsoleApplication1\bin\Release\EntityFramework.xml
 D:\Sources\MD.Framework\ConsoleApplication1\bin\Release\EntityFramework.SqlServer.xml
 D:\Sources\MD.Framework\ConsoleApplication1\bin\Release\MD.Framework.Business.pdb
 D:\Sources\MD.Framework\ConsoleApplication1\bin\Release\MD.Framework.Utility.pdb
-D:\Sources\MD.Framework\ConsoleApplication1\bin\Release\MD.PersianDateTime.pdb
 D:\Sources\MD.Framework\ConsoleApplication1\bin\Release\MD.PersianDateTime.xml
 D:\Sources\MD.Framework\ConsoleApplication1\bin\Release\Newtonsoft.Json.xml
 D:\Sources\MD.Framework\ConsoleApplication1\obj\Release\ConsoleApplication1.exe

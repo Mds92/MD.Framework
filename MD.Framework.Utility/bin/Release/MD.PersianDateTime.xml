@@ -4,7 +4,7 @@
         <name>MD.PersianDateTime</name>
     </assembly>
     <members>
-        <member name="M:MD.PersianDateTime.StringHelper.ConvertDigitsToLatin(System.String)">
+        <member name="M:MD.PersianDateTime.ExtensionsHelper.ConvertDigitsToLatin(System.String)">
             <summary>
             Convert all persian and arabic digit to english in any string  
             <!-- http://stackoverflow.com/a/28905353/579381 --> 
@@ -12,9 +12,69 @@
             <param name="inputString">input string that maybe contain persian or arabic digit</param>
             <returns>a string with english digit</returns>
         </member>
+        <member name="T:MD.PersianDateTime.HijriDateTime">
+            <summary>
+            تاریخ هجری قمری
+            </summary>
+        </member>
+        <member name="P:MD.PersianDateTime.HijriDateTime.Year">
+            <summary>
+            سال قمری
+            </summary>
+        </member>
+        <member name="P:MD.PersianDateTime.HijriDateTime.Month">
+            <summary>
+            ماه قمری
+            </summary>
+        </member>
+        <member name="P:MD.PersianDateTime.HijriDateTime.MonthName">
+            <summary>
+            نام ماه قمری
+            </summary>
+        </member>
+        <member name="P:MD.PersianDateTime.HijriDateTime.Day">
+            <summary>
+            روز ماه قمری
+            </summary>
+        </member>
+        <member name="F:MD.PersianDateTime.PersianDayOfWeek.Saturday">
+            <summary>
+            شنبه
+            </summary>
+        </member>
+        <member name="F:MD.PersianDateTime.PersianDayOfWeek.Sunday">
+            <summary>
+            یکشنبه
+            </summary>
+        </member>
+        <member name="F:MD.PersianDateTime.PersianDayOfWeek.Monday">
+            <summary>
+            دو شنبه
+            </summary>
+        </member>
+        <member name="F:MD.PersianDateTime.PersianDayOfWeek.Tuesday">
+            <summary>
+            سه شنبه
+            </summary>
+        </member>
+        <member name="F:MD.PersianDateTime.PersianDayOfWeek.Wednesday">
+            <summary>
+            چهار شنبه
+            </summary>
+        </member>
+        <member name="F:MD.PersianDateTime.PersianDayOfWeek.Thursday">
+            <summary>
+            پنج شنبه
+            </summary>
+        </member>
+        <member name="F:MD.PersianDateTime.PersianDayOfWeek.Friday">
+            <summary>
+            جمعه
+            </summary>
+        </member>
         <member name="T:MD.PersianDateTime.PersianDateTime">
             <summary>
-            Created By Mohammad Dayyan, mds_soft@yahoo.com
+            Created By Mohammad Dayyan, @mdssoft, mds_soft@yahoo.com
             1393/09/14
             </summary>
         </member>
@@ -255,7 +315,7 @@
         </member>
         <member name="M:MD.PersianDateTime.PersianDateTime.op_Implicit(MD.PersianDateTime.PersianDateTime)~System.DateTime">
             <summary>
-            تبدیل خودکار بع دیت تایم میلادی
+            تبدیل خودکار به دیت تایم میلادی
             </summary>
         </member>
         <member name="M:MD.PersianDateTime.PersianDateTime.op_Equality(MD.PersianDateTime.PersianDateTime,MD.PersianDateTime.PersianDateTime)">
@@ -333,7 +393,7 @@
             همانند 13920305
             </summary>
         </member>
-        <member name="M:MD.PersianDateTime.PersianDateTime.ToString(System.String)">
+        <member name="M:MD.PersianDateTime.PersianDateTime.ToString(System.String,System.IFormatProvider)">
             <summary>
             فرمت های که پشتیبانی می شوند
             <para />
@@ -418,6 +478,24 @@
             13930914
             </summary>
         </member>
+        <member name="M:MD.PersianDateTime.PersianDateTime.ToTimeInt">
+            <summary>
+            در این فرمت نمایش ساعت و دقیقه و ثانیه در کنار هم با حذف علامت : تبدیل به عدد می شوند و نمایش داده می شود
+            <para />
+            مثال: 123452 
+            <para />
+            که به معنای ساعت 12 و 34 دقیقه و 52 ثانیه می باشد
+            </summary>
+        </member>
+        <member name="M:MD.PersianDateTime.PersianDateTime.ToTimeInt1">
+            <summary>
+            در این فرمت نمایش ساعت و دقیقه در کنار هم با حذف علامت : تبدیل به عدد می شوند و نمایش داده می شود
+            <para />
+            مثال: 1234 
+            <para />
+            که به معنای ساعت 12 و 34 دقیقه می باشد
+            </summary>
+        </member>
         <member name="M:MD.PersianDateTime.PersianDateTime.ToLongDateString">
             <summary>
             نمایش تاریخ به فرمتی مشابه زیر
@@ -460,15 +538,36 @@
             1 دقیقه قبل
             </summary>
         </member>
+        <member name="M:MD.PersianDateTime.PersianDateTime.GetTime">
+            <summary>
+            گرفتن فقط زمان 
+            </summary>
+        </member>
+        <member name="M:MD.PersianDateTime.PersianDateTime.SetTime(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            تنظیم کردن زمان
+            </summary>
+        </member>
         <member name="M:MD.PersianDateTime.PersianDateTime.ToDateTime">
             <summary>
-            تبدیل یه تاریخ میلادی
+            تبدیل به تاریخ میلادی
+            </summary>
+        </member>
+        <member name="M:MD.PersianDateTime.PersianDateTime.ToHijri(System.Int32)">
+            <summary>
+            تبدیل به تاریخ هجری قمری
             </summary>
         </member>
         <member name="M:MD.PersianDateTime.PersianDateTime.Subtract(MD.PersianDateTime.PersianDateTime)">
             <summary>
             کم کردن دو تاریخ از هم
             </summary>
+        </member>
+        <member name="M:MD.PersianDateTime.PersianDateTime.MonthDifference(System.DateTime)">
+            <summary>
+            تعداد ماه اختلافی با تاریخ دیگری را بر میگرداند
+            </summary>
+            <returns>تعداد ماه</returns>
         </member>
         <member name="M:MD.PersianDateTime.PersianDateTime.Add(System.TimeSpan)">
             <summary>
@@ -509,6 +608,12 @@
             <summary>
             اضافه کردن میلی ثانیه به تاریخ
             </summary>
+        </member>
+        <member name="M:MD.PersianDateTime.PersianDateTime.GetPersianMonthName(System.Int32)">
+            <summary>
+            نام فارسی ماه بر اساس شماره ماه
+            </summary>
+            <returns>نام فارسی ماه</returns>
         </member>
     </members>
 </doc>

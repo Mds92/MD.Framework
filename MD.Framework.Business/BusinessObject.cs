@@ -809,6 +809,7 @@ namespace MD.Framework.Business
         #region Update
 
         protected virtual void BeforeUpdate(TEntity entity) { }
+        protected virtual void AfterSaveChanges(TEntity entity) { }
 
         public void SaveChanges(List<TEntity> entities = null)
         {
@@ -821,6 +822,9 @@ namespace MD.Framework.Business
                         BeforeUpdate(entity);
                     }
                 Context.SaveChanges();
+                if (entities != null)
+                    foreach (var entity in entities)
+                        AfterSaveChanges(entity);
             }
             catch (Exception ex)
             {
