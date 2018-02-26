@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "targets": {
     ".NETCoreApp,Version=v1.1": {
       "Libuv/1.9.1": {
@@ -6823,7 +6823,7 @@
       ]
     },
     "System.Runtime.Serialization.Formatters/4.3.0": {
-      "sha512": "KT591AkTNFOTbhZlaeMVvfax3RqhH1EJlcwF50Wm7sfnBLuHiOeZRRKrr1ns3NESkM20KPZ5Ol/ueMq5vg4QoQ==",
+      "sha512": "c45L7AJrn7rhs/j4TjU8iUSbBTN7IDDND6I+vvFYWoRB+u4wGaq8yrMbouZYQ8DoSJe4avgunI20qqPclsNVuw==",
       "type": "package",
       "path": "system.runtime.serialization.formatters/4.3.0",
       "files": [
@@ -8163,19 +8163,38 @@
   },
   "project": {
     "version": "1.0.0",
+    "restoreSettings": {
+      "hideWarningsAndErrors": true
+    },
     "restore": {
       "projectUniqueName": "D:\\Sources\\MD.Framework\\MD.Framework.Utility.Core\\MD.Framework.Utility.Core.csproj",
       "projectName": "MD.Framework.Utility.Core",
       "projectPath": "D:\\Sources\\MD.Framework\\MD.Framework.Utility.Core\\MD.Framework.Utility.Core.csproj",
+      "packagesPath": "C:\\Users\\Mohammad\\.nuget\\packages\\",
       "outputPath": "D:\\Sources\\MD.Framework\\MD.Framework.Utility.Core\\obj\\",
       "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "D:\\Sources\\MD.Framework\\.nuget\\NuGet.Config",
+        "C:\\Users\\Mohammad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
       "originalTargetFrameworks": [
         "netcoreapp1.1"
       ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
       "frameworks": {
         "netcoreapp1.1": {
           "projectReferences": {}
         }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
       }
     },
     "frameworks": {

@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Mohammad Dayyan 2017")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("A framework to work with EntityFramework")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.1.1.0")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.1.2.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.1.2.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Mohammad Dayyan")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MD.Framework.Business.Core")]

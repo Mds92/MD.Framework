@@ -16,3 +16,4 @@ D:\Sources\MD.Framework\MD.Framework.Business\bin\Release\MD.PersianDateTime.xml
 D:\Sources\MD.Framework\MD.Framework.Business\obj\Release\MD.Framework.Business.csprojResolveAssemblyReference.cache
 D:\Sources\MD.Framework\MD.Framework.Business\obj\Release\MD.Framework.Business.dll
 D:\Sources\MD.Framework\MD.Framework.Business\obj\Release\MD.Framework.Business.pdb
+D:\Sources\MD.Framework\MD.Framework.Business\obj\Release\MD.Framework.Business.csproj.CoreCompileInputs.cache

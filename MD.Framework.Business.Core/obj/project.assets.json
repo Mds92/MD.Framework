@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "targets": {
     ".NETCoreApp,Version=v1.0": {
       "Libuv/1.9.1": {
@@ -7737,19 +7737,38 @@
   },
   "project": {
     "version": "1.1.2",
+    "restoreSettings": {
+      "hideWarningsAndErrors": true
+    },
     "restore": {
       "projectUniqueName": "D:\\Sources\\MD.Framework\\MD.Framework.Business.Core\\MD.Framework.Business.Core.csproj",
       "projectName": "MD.Framework.Business.Core",
       "projectPath": "D:\\Sources\\MD.Framework\\MD.Framework.Business.Core\\MD.Framework.Business.Core.csproj",
+      "packagesPath": "C:\\Users\\Mohammad\\.nuget\\packages\\",
       "outputPath": "D:\\Sources\\MD.Framework\\MD.Framework.Business.Core\\obj\\",
       "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "D:\\Sources\\MD.Framework\\.nuget\\NuGet.Config",
+        "C:\\Users\\Mohammad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
       "originalTargetFrameworks": [
         "netcoreapp1.0"
       ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
       "frameworks": {
         "netcoreapp1.0": {
           "projectReferences": {}
         }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
       }
     },
     "frameworks": {
