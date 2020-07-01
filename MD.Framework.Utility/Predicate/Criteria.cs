@@ -325,9 +325,9 @@ namespace MD.Framework.Utility
 				case OperatorEnum.Contain:
 				case OperatorEnum.NotContain:
 					var listType = typeof(ICollection<>);
-					var numbericGenericType = listType.MakeGenericType(leftSidePropertyType);
-					valueObject = JsonConvert.DeserializeObject(!string.IsNullOrEmpty(conditionForConvert.SerializedValue) ? conditionForConvert.SerializedValue : null, numbericGenericType);
-					containsMethodInfo = numbericGenericType.GetMethod("Contains", new[] { leftSidePropertyType });
+					var numericGenericType = listType.MakeGenericType(leftSidePropertyType);
+					valueObject = JsonConvert.DeserializeObject(!string.IsNullOrEmpty(conditionForConvert.SerializedValue) ? conditionForConvert.SerializedValue : null, numericGenericType);
+					containsMethodInfo = numericGenericType.GetMethod("Contains", new[] { leftSidePropertyType });
 					collection = Expression.Constant(valueObject);
 					break;
 
