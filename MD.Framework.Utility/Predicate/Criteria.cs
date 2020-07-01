@@ -544,7 +544,7 @@ namespace MD.Framework.Utility
 					break;
 
 				default:
-					throw new ArgumentException("Argument is not valid beacuse of operation type", nameof(conditionForConvert));
+					throw new ArgumentException("Argument is not valid because of operation type", nameof(conditionForConvert));
 			}
 
 			return result;
@@ -553,10 +553,10 @@ namespace MD.Framework.Utility
 		private static Expression GetLeftSide(string selectorString, Type parameterExpressionType, ParameterExpression parameterExpression)
 		{
 			if (string.IsNullOrWhiteSpace(selectorString)) throw new ArgumentNullException(nameof(selectorString), "Selector string is not valid");
-			var propertyParts = selectorString.Split(new[] { '.' });
+			var propertyParts = selectorString.Split('.');
 			if (propertyParts.Any(string.IsNullOrWhiteSpace))
 				throw new Exception($"Selector string \"{selectorString}\" format is not valid.");
-			var firstPartOfSelector = GetInvariantCultrueString(propertyParts[0]);
+			var firstPartOfSelector = GetInvariantCultureString(propertyParts[0]);
 
 			var propertyInThisType = parameterExpressionType.GetProperty(firstPartOfSelector);
 			if (propertyInThisType == null)
@@ -574,10 +574,10 @@ namespace MD.Framework.Utility
 			var inputExpressionType = inputExpression.Type;
 
 			if (string.IsNullOrWhiteSpace(selectorString)) throw new ArgumentNullException(nameof(selectorString), "Selector string is not valid");
-			var propertyParts = selectorString.Split(new[] { '.' });
+			var propertyParts = selectorString.Split('.');
 			if (propertyParts.Any(string.IsNullOrWhiteSpace))
 				throw new Exception($"Selector string \"{selectorString}\" format is not valid.");
-			var firstPartOfSelector = GetInvariantCultrueString(propertyParts[0]);
+			var firstPartOfSelector = GetInvariantCultureString(propertyParts[0]);
 
 			PropertyInfo selectedPropertyInfo = null;
 			MethodInfo selectedMethodInfo = null;
@@ -602,7 +602,7 @@ namespace MD.Framework.Utility
 			return resultExpression;
 		}
 
-		private static string GetInvariantCultrueString(string input)
+		private static string GetInvariantCultureString(string input)
 		{
 			if (string.IsNullOrEmpty(input))
 				return string.Empty;
