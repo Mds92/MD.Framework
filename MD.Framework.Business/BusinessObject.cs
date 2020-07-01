@@ -349,7 +349,7 @@ namespace MD.Framework.Business
 
             if (EntityType != propInfo.ReflectedType && !EntityType.IsSubclassOf(propInfo.ReflectedType))
                 throw new ArgumentException(
-                    $"Expresion '{propertyLambda}' refers to a property that is not from type {EntityType}.");
+                    $"Expression '{propertyLambda}' refers to a property that is not from type {EntityType}.");
 
             var parameterExpression = Expression.Parameter(EntityType, "q");
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity.SqlServer;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
@@ -13,7 +14,8 @@ namespace MD.Framework.Utility
 {
 	[Serializable]
 	[DataContract]
-	public class Criteria<TEntity> where TEntity : class
+    [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
+    public class Criteria<TEntity> where TEntity : class
 	{
 		[DataMember]
 		private Condition ConditionContainer { get; set; }
@@ -185,7 +187,7 @@ namespace MD.Framework.Utility
 			_checkedIds = new List<Guid>();
 			var entityType = typeof(TDestination);
 			var parameterExpression = Expression.Parameter(entityType, "entity");
-			var resultExpression = ConvertConditionToExpresion(ConditionContainer.Tree, entityType, parameterExpression);
+			var resultExpression = ConvertConditionToExpression(ConditionContainer.Tree, entityType, parameterExpression);
 			return Expression.Lambda<Func<TDestination, bool>>(resultExpression, parameterExpression);
 		}
 
@@ -237,13 +239,13 @@ namespace MD.Framework.Utility
 			_checkedIds = new List<Guid>();
 			var entityType = typeof(TEntity);
 			var parameterExpression = Expression.Parameter(entityType, "entity");
-			var resultExpression = ConvertConditionToExpresion(ConditionContainer.Tree, entityType, parameterExpression);
+			var resultExpression = ConvertConditionToExpression(ConditionContainer.Tree, entityType, parameterExpression);
 			return Expression.Lambda<Func<TEntity, bool>>(resultExpression, parameterExpression);
 		}
 
 		private List<Guid> _checkedIds;
 
-		private Expression ConvertConditionToExpresion(ConditionTree conditionTree, Type parameterExpressionType, ParameterExpression parameterExpression)
+		private Expression ConvertConditionToExpression(ConditionTree conditionTree, Type parameterExpressionType, ParameterExpression parameterExpression)
 		{
 			var resultExpression = GetConditionExpression(conditionTree, parameterExpressionType, parameterExpression);
 
@@ -259,11 +261,11 @@ namespace MD.Framework.Utility
 				switch (logicalOperator)
 				{
 					case LogicalOperatorEnum.And:
-						resultExpression = Expression.AndAlso(resultExpression, ConvertConditionToExpresion(childrenConditionTree, parameterExpressionType, parameterExpression));
+						resultExpression = Expression.AndAlso(resultExpression, ConvertConditionToExpression(childrenConditionTree, parameterExpressionType, parameterExpression));
 						break;
 
 					case LogicalOperatorEnum.Or:
-						resultExpression = Expression.OrElse(resultExpression, ConvertConditionToExpresion(childrenConditionTree, parameterExpressionType, parameterExpression));
+						resultExpression = Expression.OrElse(resultExpression, ConvertConditionToExpression(childrenConditionTree, parameterExpressionType, parameterExpression));
 						break;
 				}
 			}
