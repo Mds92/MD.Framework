@@ -138,11 +138,11 @@ namespace MD.Framework.Utility
             return this;
         }
 
-        public SortCondition<TDestionation> Cast<TDestionation>() where TDestionation : class
+        public SortCondition<TDestination> Cast<TDestination>() where TDestination : class
         {
-            var result = new SortCondition<TDestionation>
+            var result = new SortCondition<TDestination>
             {
-                _entityType = typeof(TDestionation),
+                _entityType = typeof(TDestination),
                 _parameterExpression = _parameterExpression,
                 _orderableParameterExpression = _orderableParameterExpression
             };

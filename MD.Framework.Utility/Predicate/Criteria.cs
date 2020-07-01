@@ -31,7 +31,7 @@ namespace MD.Framework.Utility
 		public static Criteria<TEntity> True()
 		{
 			var entityType = typeof(TEntity);
-			var critaria = new Criteria<TEntity>
+			var criteria = new Criteria<TEntity>
 			{
 				ConditionContainer = new Condition
 				{
@@ -45,15 +45,15 @@ namespace MD.Framework.Utility
 				},
 				_entityType = entityType
 			};
-			critaria.ConditionContainer.Id = GetNewGuid();
-			critaria.ConditionContainer.Tree.Id = GetNewGuid();
-			return critaria;
+			criteria.ConditionContainer.Id = GetNewGuid();
+			criteria.ConditionContainer.Tree.Id = GetNewGuid();
+			return criteria;
 		}
 
 		public static Criteria<TEntity> False()
 		{
 			var entityType = typeof(TEntity);
-			var critaria = new Criteria<TEntity>
+			var criteria = new Criteria<TEntity>
 			{
 				ConditionContainer = new Condition
 				{
@@ -68,22 +68,22 @@ namespace MD.Framework.Utility
 				},
 				_entityType = entityType
 			};
-			critaria.ConditionContainer.Id = GetNewGuid();
-			critaria.ConditionContainer.Tree.Id = GetNewGuid();
-			return critaria;
+			criteria.ConditionContainer.Id = GetNewGuid();
+			criteria.ConditionContainer.Tree.Id = GetNewGuid();
+			return criteria;
 		}
 
 		#endregion
 
 		#region Or
 
-		public Criteria<TEntity> Or(Criteria<TEntity> critaria)
+		public Criteria<TEntity> Or(Criteria<TEntity> criteria)
 		{
-			if (critaria == null) return this;
-			if (_entityType != critaria._entityType)
-				throw new Exception($"critaria must be from '{_entityType.Assembly.FullName}' type");
+			if (criteria == null) return this;
+			if (_entityType != criteria._entityType)
+				throw new Exception($"criteria must be from '{_entityType.Assembly.FullName}' type");
             ConditionContainer.Tree.NextLogicalOperator = LogicalOperatorEnum.Or;
-            ConditionContainer.Tree.ChildrenConditions.Add(critaria.ConditionContainer.Tree);
+            ConditionContainer.Tree.ChildrenConditions.Add(criteria.ConditionContainer.Tree);
 			return this;
 		}
 
@@ -129,13 +129,13 @@ namespace MD.Framework.Utility
 
 		#region And
 
-		public Criteria<TEntity> And(Criteria<TEntity> critaria)
+		public Criteria<TEntity> And(Criteria<TEntity> criteria)
 		{
-			if (critaria == null) return this;
-			if (_entityType != critaria._entityType)
-				throw new Exception($"critaria must be from '{_entityType.Assembly.FullName}' type");
+			if (criteria == null) return this;
+			if (_entityType != criteria._entityType)
+				throw new Exception($"criteria must be from '{_entityType.Assembly.FullName}' type");
             ConditionContainer.Tree.NextLogicalOperator = LogicalOperatorEnum.And;
-            ConditionContainer.Tree.ChildrenConditions.Add(critaria.ConditionContainer.Tree);
+            ConditionContainer.Tree.ChildrenConditions.Add(criteria.ConditionContainer.Tree);
 			return this;
 		}
 
@@ -190,11 +190,11 @@ namespace MD.Framework.Utility
 			return Expression.Lambda<Func<TDestination, bool>>(resultExpression, parameterExpression);
 		}
 
-		public Criteria<TDestionation> Cast<TDestionation>() where TDestionation : class
+		public Criteria<TDestination> Cast<TDestination>() where TDestination : class
 		{
-			var result = new Criteria<TDestionation>
+			var result = new Criteria<TDestination>
 			{
-				_entityType = typeof(TDestionation),
+				_entityType = typeof(TDestination),
 				ConditionContainer = new Condition
 				{
 					EntityTypeName = ConditionContainer.EntityTypeName,
