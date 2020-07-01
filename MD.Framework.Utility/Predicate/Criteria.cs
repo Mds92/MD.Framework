@@ -18,7 +18,6 @@ namespace MD.Framework.Utility
 		[DataMember]
 		private Condition ConditionContainer { get; set; }
 		private Type _entityType;
-		private static readonly Type StringType = typeof(string);
 		private static Guid GetNewGuid()
 		{
 			return Guid.NewGuid();
@@ -308,7 +307,7 @@ namespace MD.Framework.Utility
 			// نوع پروپرتی اصلی در دیتابیس
 			var leftSidePropertyType = GetTargetPropertyType(parameterExpressionType, conditionForConvert.SelectorString);
 			var isNumericType = leftSidePropertyType.IsNumericType();
-			var isString = leftSidePropertyType == StringType;
+			var isString = leftSidePropertyType == typeof(string);
 
 			MethodInfo trimMethodInfo = null;
 			MethodInfo trimStartMethodInfo = null;
@@ -317,8 +316,8 @@ namespace MD.Framework.Utility
 			MethodInfo endsWithMethodInfo = null;
 			MethodInfo containsMethodInfo = null;
 			MethodInfo stringCompareMethodInfo = null;
-			Expression argumantsExpression = null;
-			var leftSile = GetLeftSide(conditionForConvert.SelectorString, parameterExpressionType, parameterExpression);
+			Expression argumentsExpression = null;
+			var leftSide = GetLeftSide(conditionForConvert.SelectorString, parameterExpressionType, parameterExpression);
 
 			switch (conditionForConvert.OperationType)
 			{
@@ -343,7 +342,7 @@ namespace MD.Framework.Utility
 				case OperatorEnum.StartsWith:
 					startsWithMethodInfo = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
 					trimStartMethodInfo = typeof(string).GetMethod("TrimStart", BindingFlags.Public | BindingFlags.Instance);
-					argumantsExpression = Expression.NewArrayInit(typeof(char));
+					argumentsExpression = Expression.NewArrayInit(typeof(char));
 					valueObject = JsonConvert.DeserializeObject(!string.IsNullOrEmpty(conditionForConvert.SerializedValue) ? conditionForConvert.SerializedValue : null, leftSidePropertyType);
 					rightSide = Expression.Constant(valueObject, leftSidePropertyType);
 					break;
@@ -352,7 +351,7 @@ namespace MD.Framework.Utility
 				case OperatorEnum.EndsWith:
 					endsWithMethodInfo = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
 					trimEndMethodInfo = typeof(string).GetMethod("TrimEnd", BindingFlags.Public | BindingFlags.Instance);
-					argumantsExpression = Expression.NewArrayInit(typeof(char));
+					argumentsExpression = Expression.NewArrayInit(typeof(char));
 					valueObject = JsonConvert.DeserializeObject(!string.IsNullOrEmpty(conditionForConvert.SerializedValue) ? conditionForConvert.SerializedValue : null, leftSidePropertyType);
 					rightSide = Expression.Constant(valueObject, leftSidePropertyType);
 					break;
@@ -393,7 +392,7 @@ namespace MD.Framework.Utility
 			if (isNumericType)
 			{
 				stringConvertMethodInfo = typeof(SqlFunctions).GetMethod("StringConvert", new[] { nullableDoubleType });
-				unaryExpression = Expression.Convert(leftSile, nullableDoubleType);
+				unaryExpression = Expression.Convert(leftSide, nullableDoubleType);
 				convertedRightSideConstantExpression = Expression.Constant(valueObject?.ToString());
 			}
 
@@ -401,20 +400,20 @@ namespace MD.Framework.Utility
 			{
 				case OperatorEnum.Equal:
 				case OperatorEnum.IsNull:
-					result = Expression.Equal(leftSile, rightSide);
+					result = Expression.Equal(leftSide, rightSide);
 					break;
 
 				case OperatorEnum.NotEqual:
 				case OperatorEnum.IsNotNull:
-					result = Expression.NotEqual(leftSile, rightSide);
+					result = Expression.NotEqual(leftSide, rightSide);
 					break;
 
 				case OperatorEnum.Contain:
-					result = Expression.Call(collection, containsMethodInfo, leftSile);
+					result = Expression.Call(collection, containsMethodInfo, leftSide);
 					break;
 
 				case OperatorEnum.NotContain:
-					result = Expression.Not(Expression.Call(collection, containsMethodInfo, leftSile));
+					result = Expression.Not(Expression.Call(collection, containsMethodInfo, leftSide));
 					break;
 
 				case OperatorEnum.Like:
@@ -426,7 +425,7 @@ namespace MD.Framework.Utility
 					}
 					else
 					{
-						result = Expression.Call(leftSile, containsMethodInfo, rightSide);
+						result = Expression.Call(leftSide, containsMethodInfo, rightSide);
 					}
 					break;
 
@@ -440,7 +439,7 @@ namespace MD.Framework.Utility
 					}
 					else
 					{
-						result = Expression.Not(Expression.Call(leftSile, containsMethodInfo, rightSide));
+						result = Expression.Not(Expression.Call(leftSide, containsMethodInfo, rightSide));
 					}
 					break;
 
@@ -448,12 +447,12 @@ namespace MD.Framework.Utility
 					if (isNumericType)
 					{
 						var methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
-						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimStartMethodInfo, argumantsExpression);
+						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimStartMethodInfo, argumentsExpression);
 						result = Expression.Call(methodCallExpression2, startsWithMethodInfo, convertedRightSideConstantExpression);
 					}
 					else
 					{
-						result = Expression.Call(leftSile, startsWithMethodInfo, rightSide);
+						result = Expression.Call(leftSide, startsWithMethodInfo, rightSide);
 					}
 					break;
 
@@ -461,13 +460,13 @@ namespace MD.Framework.Utility
 					if (isNumericType)
 					{
 						var methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
-						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimStartMethodInfo, argumantsExpression);
+						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimStartMethodInfo, argumentsExpression);
 						result = Expression.Call(methodCallExpression2, startsWithMethodInfo, convertedRightSideConstantExpression);
 						result = Expression.Not(result);
 					}
 					else
 					{
-						result = Expression.Not(Expression.Call(leftSile, startsWithMethodInfo, rightSide));
+						result = Expression.Not(Expression.Call(leftSide, startsWithMethodInfo, rightSide));
 					}
 					break;
 
@@ -475,12 +474,12 @@ namespace MD.Framework.Utility
 					if (isNumericType)
 					{
 						var methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
-						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimEndMethodInfo, argumantsExpression);
+						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimEndMethodInfo, argumentsExpression);
 						result = Expression.Call(methodCallExpression2, endsWithMethodInfo, convertedRightSideConstantExpression);
 					}
 					else
 					{
-						result = Expression.Call(leftSile, endsWithMethodInfo, rightSide);
+						result = Expression.Call(leftSide, endsWithMethodInfo, rightSide);
 					}
 					break;
 
@@ -488,57 +487,57 @@ namespace MD.Framework.Utility
 					if (isNumericType)
 					{
 						var methodCallExpression1 = Expression.Call(stringConvertMethodInfo, unaryExpression);
-						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimEndMethodInfo, argumantsExpression);
+						var methodCallExpression2 = Expression.Call(methodCallExpression1, trimEndMethodInfo, argumentsExpression);
 						result = Expression.Call(methodCallExpression2, endsWithMethodInfo, convertedRightSideConstantExpression);
 						result = Expression.Not(result);
 					}
 					else
 					{
-						result = Expression.Not(Expression.Call(leftSile, endsWithMethodInfo, rightSide));
+						result = Expression.Not(Expression.Call(leftSide, endsWithMethodInfo, rightSide));
 					}
 					break;
 
 				case OperatorEnum.GreaterThan:
 					if (isString)
 					{
-						result = Expression.GreaterThan(Expression.Call(leftSile, stringCompareMethodInfo, rightSide), Expression.Constant(0));
+						result = Expression.GreaterThan(Expression.Call(leftSide, stringCompareMethodInfo, rightSide), Expression.Constant(0));
 					}
 					else
 					{
-						result = Expression.GreaterThan(leftSile, rightSide);
+						result = Expression.GreaterThan(leftSide, rightSide);
 					}
 					break;
 
 				case OperatorEnum.GreaterThanOrEqual:
 					if (isString)
 					{
-						result = Expression.GreaterThanOrEqual(Expression.Call(leftSile, stringCompareMethodInfo, rightSide), Expression.Constant(0));
+						result = Expression.GreaterThanOrEqual(Expression.Call(leftSide, stringCompareMethodInfo, rightSide), Expression.Constant(0));
 					}
 					else
 					{
-						result = Expression.GreaterThanOrEqual(leftSile, rightSide);
+						result = Expression.GreaterThanOrEqual(leftSide, rightSide);
 					}
 					break;
 
 				case OperatorEnum.LessThan:
 					if (isString)
 					{
-						result = Expression.LessThan(Expression.Call(leftSile, stringCompareMethodInfo, rightSide), Expression.Constant(0));
+						result = Expression.LessThan(Expression.Call(leftSide, stringCompareMethodInfo, rightSide), Expression.Constant(0));
 					}
 					else
 					{
-						result = Expression.LessThan(leftSile, rightSide);
+						result = Expression.LessThan(leftSide, rightSide);
 					}
 					break;
 
 				case OperatorEnum.LessThanOrEqual:
 					if (isString)
 					{
-						result = Expression.LessThanOrEqual(Expression.Call(leftSile, stringCompareMethodInfo, rightSide), Expression.Constant(0));
+						result = Expression.LessThanOrEqual(Expression.Call(leftSide, stringCompareMethodInfo, rightSide), Expression.Constant(0));
 					}
 					else
 					{
-						result = Expression.LessThanOrEqual(leftSile, rightSide);
+						result = Expression.LessThanOrEqual(leftSide, rightSide);
 					}
 					break;
 
